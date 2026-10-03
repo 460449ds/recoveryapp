@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Recovery Desk – RMP 2026-27</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EDF0F3; --surface:#FFFFFF; --ink:#15223A; --muted:#5B6678; --line:#CAD2DB;
+  --brand:#1F4E8C; --brand-soft:#DCE6F4;
+  --red:#B42318; --red-soft:#FBE3E1; --amber:#94540A; --amber-soft:#FBEBD3;
+  --green:#1E7A46; --green-soft:#DDF1E5; --grey-soft:#E7EAEE;
+  --w-web:#1F4E8C; --w-prep:#6B3FA0; --w-field:#94540A; --w-court:#B42318; --w-portal:#0E7490; --w-cbs:#475467;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0F1622; --surface:#172131; --ink:#E6ECF3; --muted:#9AA6B6; --line:#2B384A;
+    --brand:#86AEE6; --brand-soft:#1E3150;
+    --red:#F28B82; --red-soft:#3A1E1E; --amber:#E7AE55; --amber-soft:#3A2A12;
+    --green:#72CF99; --green-soft:#16301F; --grey-soft:#222D3D;
+    --w-web:#86AEE6; --w-prep:#B99BE6; --w-field:#E7AE55; --w-court:#F28B82; --w-portal:#5FC6DB; --w-cbs:#A7B2C2;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0F1622; --surface:#172131; --ink:#E6ECF3; --muted:#9AA6B6; --line:#2B384A;
+  --brand:#86AEE6; --brand-soft:#1E3150;
+  --red:#F28B82; --red-soft:#3A1E1E; --amber:#E7AE55; --amber-soft:#3A2A12;
+  --green:#72CF99; --green-soft:#16301F; --grey-soft:#222D3D;
+  --w-web:#86AEE6; --w-prep:#B99BE6; --w-field:#E7AE55; --w-court:#F28B82; --w-portal:#5FC6DB; --w-cbs:#A7B2C2;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Public Sans",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:15px;line-height:1.5;font-variant-numeric:tabular-nums}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px}
+header.top{background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:20}
+.brandrow{display:flex;align-items:baseline;gap:12px;padding:14px 0 6px;flex-wrap:wrap}
+.brandrow h1{margin:0;font-size:22px;font-weight:800;letter-spacing:-.01em}
+.brandrow p{margin:0;color:var(--muted);font-size:13px}
+nav.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding-bottom:0}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs button{background:none;border:0;border-bottom:3px solid transparent;padding:10px 12px;font-weight:600;color:var(--muted);white-space:nowrap;cursor:pointer}
+nav.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--brand)}
+main{padding:18px 0 60px}
+section.pane{display:none}
+section.pane.on{display:block}
+h2{font-size:19px;margin:4px 0 6px;font-weight:700}
+h3{font-size:16px;margin:18px 0 8px;font-weight:700}
+.lead{color:var(--muted);margin:0 0 14px;max-width:70ch}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0 14px}
+.btn{border:1px solid var(--line);background:var(--surface);padding:8px 13px;border-radius:8px;cursor:pointer;font-weight:600;font-size:14px}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+:root[data-theme="dark"] .btn.primary{color:#0F1622}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .btn.primary{color:#0F1622}}
+.btn.danger{color:var(--red)}
+.btn.small{padding:5px 10px;font-size:13px}
+.filebtn{position:relative;overflow:hidden}
+.filebtn input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:16px}
+.summary div{background:var(--surface);padding:10px 12px}
+.summary b{display:block;font-size:22px;line-height:1.2}
+.summary span{font-size:12.5px;color:var(--muted)}
+.summary .r b{color:var(--red)} .summary .a b{color:var(--amber)}
+.acc{background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--line);border-radius:6px;margin-bottom:10px}
+.acc.hasover{border-left-color:var(--red)} .acc.hassoon{border-left-color:var(--amber)} .acc.clean{border-left-color:var(--green)}
+.acc > button.head{all:unset;box-sizing:border-box;display:grid;grid-template-columns:1fr auto;gap:4px 12px;width:100%;padding:12px 14px;cursor:pointer}
+.acc > button.head:focus-visible{outline:2px solid var(--brand)}
+.acc .nm{font-weight:700;font-size:15.5px}
+.acc .meta{color:var(--muted);font-size:13px}
+.acc .counts{text-align:right;font-size:13px;white-space:nowrap}
+.acc .counts .o{color:var(--red);font-weight:700}
+.acc .counts .s{color:var(--amber);font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:6px;grid-column:1/-1;margin-top:4px}
+.chip{font-size:12px;padding:2px 8px;border-radius:20px;background:var(--brand-soft);color:var(--ink);font-weight:600}
+.chip.warn{background:var(--red-soft)}
+.detail{border-top:1px solid var(--line);padding:12px 14px 16px;display:none}
+.acc.open .detail{display:block}
+/* the NPA clock */
+.clock{margin:6px 0 18px}
+.clock .cap{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:6px;gap:8px;flex-wrap:wrap}
+.clock .cap b{color:var(--ink)}
+.rail{position:relative;height:46px}
+.rail .track{position:absolute;left:0;right:0;top:18px;height:8px;border-radius:4px;background:var(--grey-soft)}
+.rail .fill{position:absolute;left:0;top:18px;height:8px;border-radius:4px;background:var(--brand)}
+.rail .tick{position:absolute;top:12px;width:2px;height:20px;background:var(--muted);transform:translateX(-1px)}
+.rail .tick.done{background:var(--green)} .rail .tick.late{background:var(--red)}
+.rail .tick i{position:absolute;top:22px;left:50%;transform:translateX(-50%);font-style:normal;font-size:11px;color:var(--muted)}
+.rail .now{position:absolute;top:0;transform:translateX(-50%);font-size:11px;font-weight:700;background:var(--ink);color:var(--surface);padding:0 5px;border-radius:3px;white-space:nowrap}
+.legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:4px 16px;font-size:13px;margin-top:4px}
+.legend div::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:var(--muted)}
+.legend .done::before{background:var(--green)} .legend .late::before{background:var(--red)}
+.tasks{list-style:none;margin:0;padding:0}
+.tasks li{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;padding:10px 0;border-top:1px solid var(--line)}
+.st{font-size:11.5px;font-weight:700;padding:2px 7px;border-radius:4px;align-self:start;min-width:74px;text-align:center}
+.st.Overdue{background:var(--red-soft);color:var(--red)}
+.st.Due{background:var(--amber-soft);color:var(--amber)}
+.st.Open,.st.Check{background:var(--grey-soft);color:var(--muted)}
+.st.Done{background:var(--green-soft);color:var(--green)}
+.tasks .tt{font-weight:600}
+.tasks .nt{grid-column:2;color:var(--muted);font-size:13.5px}
+.tasks .ft{grid-column:2;display:flex;gap:8px;flex-wrap:wrap;font-size:12.5px;align-items:center}
+.where{font-weight:700;border:1.5px solid currentColor;border-radius:4px;padding:0 6px}
+.w-web{color:var(--w-web)} .w-prep{color:var(--w-prep)} .w-field{color:var(--w-field)} .w-court{color:var(--w-court)} .w-portal{color:var(--w-portal)} .w-cbs{color:var(--w-cbs)}
+.para{color:var(--muted)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:14px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px 16px}
+label.f{display:flex;flex-direction:column;gap:3px;font-size:13px;color:var(--muted);font-weight:600}
+label.f input,label.f select{border:1px solid var(--line);background:var(--paper);border-radius:6px;padding:8px 9px;font-weight:500;color:var(--ink);min-width:0;width:100%}
+.out table,.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tblwrap{overflow-x:auto}
+.tbl th,.tbl td,.out td,.out th{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl th{font-size:12.5px;color:var(--muted);font-weight:700}
+.num{text-align:right!important;white-space:nowrap}
+.hl td{background:var(--brand-soft);font-weight:700}
+.verdict{border-radius:8px;padding:12px 14px;margin:12px 0;background:var(--brand-soft)}
+.verdict b{font-size:17px}
+.verdict.bad{background:var(--red-soft)} .verdict.ok{background:var(--green-soft)}
+.note{font-size:13px;color:var(--muted)}
+.matrix h3{display:flex;align-items:center;gap:8px}
+.matrix ul{list-style:none;margin:0;padding:0}
+.matrix li{padding:9px 0;border-top:1px solid var(--line)}
+.matrix li b{display:block}
+.matrix li span{color:var(--muted);font-size:13.5px}
+dialog{border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);width:min(760px,96vw);max-height:90vh;padding:0}
+dialog::backdrop{background:rgba(10,16,28,.55)}
+dialog .dh{position:sticky;top:0;background:var(--surface);padding:14px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;z-index:2}
+dialog .db{padding:12px 16px 18px}
+dialog h4{margin:14px 0 8px;font-size:14px;color:var(--brand)}
+textarea.csv{width:100%;min-height:220px;font-size:12px;border:1px solid var(--line);border-radius:6px;background:var(--paper);padding:8px}
+.schema .card h3{margin-top:0}
+.schema code{font-size:13px}
+.empty{background:var(--surface);border:1px dashed var(--line);border-radius:10px;padding:26px;text-align:center;color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--surface);padding:9px 16px;border-radius:8px;font-weight:600;font-size:14px;display:none;z-index:50}
+.srs h3{margin:0 0 10px} .srs h4{margin:14px 0 6px;font-size:14px;color:var(--brand)}
+.srw{grid-column:1/-1}
+.srs textarea{border:1px solid var(--line);background:var(--paper);border-radius:6px;padding:8px 9px;font-weight:500;color:var(--ink);width:100%;resize:vertical;min-height:44px}
+.srt td{padding:4px}.srt input,.srt select{width:100%;min-width:90px;border:1px solid var(--line);background:var(--paper);border-radius:5px;padding:6px;font-size:13.5px}
+.srt input.n{text-align:right;min-width:80px} .srt tr.tot td{font-weight:700;background:var(--grey-soft)}
+.srt input.yr,.srt .yr{width:60px;min-width:60px;display:inline-block;padding:2px 4px}
+.srhead{border-top:4px solid var(--brand)}
+@media print{
+ @page{size:A4;margin:12mm}
+ body{background:#fff;color:#000;font-size:11px}
+ header.top,.noprint,#toast,dialog{display:none!important}
+ section.pane{display:none!important} section#sr{display:block!important}
+ main{padding:0} .wrap{max-width:none;padding:0}
+ .card{border:1px solid #999;border-radius:0;break-inside:avoid;margin-bottom:6px;padding:6px 8px;background:#fff}
+ input,select,textarea{border:none!important;background:transparent!important;padding:0!important;color:#000!important;-webkit-appearance:none;appearance:none;font-size:11px!important}
+ .tbl th,.tbl td{border:1px solid #999!important;padding:3px!important}
+ .hl td,.srt tr.tot td{background:#eee!important}
+ .note{color:#333} label.f{color:#000}
+}
+@media (max-width:560px){ .acc .counts{grid-row:1} .brandrow h1{font-size:19px} }
+@media (prefers-reduced-motion:no-preference){ .detail{animation:none} }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="brandrow">
+      <h1>Recovery Desk</h1>
+      <p>Built on the bank's Recovery Management Policy 2026-27</p>
+    </div>
+    <nav class="tabs" role="tablist">
+      <button role="tab" aria-selected="true" data-tab="acc">Accounts</button>
+      <button role="tab" aria-selected="false" data-tab="meth">Recovery procedures</button>
+      <button role="tab" aria-selected="false" data-tab="sr">Status Report</button>
+      <button role="tab" aria-selected="false" data-tab="ots">OTS check</button>
+      <button role="tab" aria-selected="false" data-tab="del">Who approves</button>
+      <button role="tab" aria-selected="false" data-tab="where">Where it's done</button>
+      <button role="tab" aria-selected="false" data-tab="schema">Data schema</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- ACCOUNTS -->
+<section class="pane on" id="acc">
+  <h2>NPA accounts and next steps</h2>
+  <p class="lead">Load your NPA list or add accounts one by one. Each account is checked against the policy timelines and you get the pending steps, their due dates and where each step has to be done. Everything stays in this browser.</p>
+  <div class="bar">
+    <button type="button" class="btn primary" id="csvBtn">Load CSV file</button><input type="file" id="csvIn" accept=".csv,.txt,text/csv,text/plain,application/vnd.ms-excel,*/*" hidden>
+    <button type="button" class="btn" id="pasteBtn">Paste CSV</button><button class="btn" id="addBtn">Add account</button>
+    <button class="btn" id="sampleBtn">Load sample accounts</button>
+    <button class="btn" id="exportBtn">Copy as CSV</button>
+    <button class="btn danger" id="clearBtn">Clear all</button>
+  </div>
+  <div class="bar">
+    <label class="f" style="flex:1;min-width:180px">Search
+      <input id="q" placeholder="Account no., borrower or branch">
+    </label>
+    <label class="f" style="min-width:170px">Show
+      <select id="flt"><option value="all">All accounts</option><option value="over">With overdue steps</option><option value="soon">Due in 15 days</option><option value="fraud">Fraud / wilful</option></select>
+    </label>
+  </div>
+  <div class="summary" id="summary"></div>
+  <div id="list"></div>
+</section>
+
+<!-- STATUS REPORT -->
+<section class="pane" id="sr">
+  <div class="noprint">
+  <h2>Status report</h2>
+  <p class="lead">The bank's status report format, section by section. Pick an account and the details already on record are filled in. Totals, crystallised dues, NPV for 2 years and the evaluation module work out as you type. Everything saves in this browser.</p>
+  <div class="bar"><label class="f" style="flex:1;min-width:220px">Account<select id="sr_acc"></select></label></div>
+  <div class="bar" id="sr_tools"><button class="btn primary" id="sr_print">Print / save as PDF</button><button class="btn" id="sr_fill">Refill from account</button><button class="btn danger" id="sr_clear">Clear report</button><span class="note" id="sr_saved"></span></div>
+  </div>
+  <div id="sr_form"></div>
+</section>
+
+<!-- METHODS -->
+<section class="pane" id="meth">
+  <h2>Recovery procedures</h2>
+  <p class="lead">The ten methods of recovery in para 5.1 of the policy. Pick an account to see which procedures apply, start tracking one, and mark each step as it is done. Due dates run from the start date or from the step they depend on, and pending steps also show up in the account's list.</p>
+  <div class="card"><h3 style="margin-top:0">Across all accounts</h3><div id="m_board"></div></div>
+  <label class="f" style="max-width:460px">Account<select id="m_acc"></select></label>
+  <div id="m_list" style="margin-top:12px"></div>
+</section>
+
+<!-- OTS -->
+<section class="pane" id="ots">
+  <h2>OTS check under the module approach</h2>
+  <p class="lead">Score card (para 8.1.4), minimum settlement (8.1.5), NPV of securities (para 9), sacrifice (para 10) and the approving authority (para 18). Amounts in ₹ lakh. The minimum amount is internal and must not be shared with the borrower.</p>
+  <div class="card">
+    <div class="grid2">
+      <label class="f">Running ledger balance (RL)<input id="o_rl" type="number" step="0.01" value="150"></label>
+      <label class="f">Total contractual dues (RL + dummy ledger + charges)<input id="o_cdc" type="number" step="0.01" value="235"></label>
+      <label class="f">Date of NPA<input id="o_npa" type="date" value="2022-01-01"></label>
+      <label class="f">Date offer received<input id="o_off" type="date" value="2026-01-05"></label>
+      <label class="f">1-year MCLR on offer date (%)<input id="o_mclr" type="number" step="0.01" value="8.9"></label>
+      <label class="f">Realisable value of securities (RV)<input id="o_rv" type="number" step="0.01" value="180"></label>
+      <label class="f">Fair market value (FMV)<input id="o_fmv" type="number" step="0.01" value="200"></label>
+      <label class="f">Marketability (weighted)
+        <select id="o_mkt"><option value="2">Easily marketable (2)</option><option value="1">Not easily marketable (1)</option><option value="0" selected>Difficult to market (0)</option></select></label>
+      <label class="f">Means of borrowers/guarantors (excluding charged assets)<input id="o_means" type="number" step="0.01" value="100"></label>
+      <label class="f">Legal position
+        <select id="o_legal"><option value="1">No defects, mortgage in order (1)</option><option value="0">Documents defective (0)</option></select></label>
+      <label class="f">Security tangled in legal issues (advocate opinion held)
+        <select id="o_tangle"><option value="N">No</option><option value="Y">Yes, reduce score</option></select></label>
+      <label class="f">Time factor for NPV
+        <select id="o_n">
+          <option value="2">2 years: possession with bank, or decree plus free assets, or auction failed, or NCLT admitted</option>
+          <option value="3" selected>3 years: no suit/SARFAESI yet, possession not with bank and litigation, tiny consortium share, stalemate</option>
+          <option value="4">4 years: multiple litigation, or agri land outside SARFAESI</option>
+          <option value="5">5 years: transfer to NARCL</option>
+        </select></label>
+      <label class="f">Borrower's offer<input id="o_offer" type="number" step="0.01" value="120"></label>
+      <label class="f">Payment period (months)<input id="o_months" type="number" step="1" value="3"></label>
+      <label class="f">Account is fraud / wilful default
+        <select id="o_fraud"><option value="N">No</option><option value="Y">Yes</option></select></label>
+      <label class="f">Account held at
+        <select id="o_office"><option value="Branch">Branch</option><option value="ARB">ARB</option><option value="SAMB">SAMB</option></select></label>
+    </div>
+  </div>
+  <div id="otsOut" class="out"></div>
+  <div class="card">
+    <h3 style="margin-top:0">Credit card NPAs (para 8.2, standalone cards)</h3>
+    <div class="tblwrap"><table class="tbl">
+      <tr><th>Age of NPA</th><th>Settlement amount</th></tr>
+      <tr><td>Up to 2 years</td><td>Real balance + simple interest at 1-yr MCLR + 1%</td></tr>
+      <tr><td>Over 2 up to 3 years</td><td>Real balance + simple interest at 1-yr MCLR</td></tr>
+      <tr><td>Over 3 years</td><td>Real balance</td></tr>
+      <tr><td>Over 3 years, exceptional, with write-off</td><td>At least 25% of real balance (CAC-III)</td></tr>
+      <tr><td>Cardholder deceased</td><td>At least 15% of real balance (RLCC)</td></tr>
+    </table></div>
+    <p class="note">Card waiver and write-off proposals do not go through SAC. Real balance is the amount actually spent by the cardholder.</p>
+  </div>
+</section>
+
+<!-- DELEGATION -->
+<section class="pane" id="del">
+  <h2>Who approves</h2>
+  <p class="lead">Pick the decision and enter the amount. The table shows the full ladder from the policy with the applicable level marked.</p>
+  <div class="card">
+    <div class="grid2">
+      <label class="f">Decision<select id="d_type"></select></label>
+      <label class="f"><span id="d_unit">Amount</span><input id="d_amt" type="number" step="0.01" value="75"></label>
+    </div>
+    <div id="delOut"></div>
+  </div>
+  <div class="card">
+    <h3 style="margin-top:0">Condonation of delay in OTS / release of security (para 20)</h3>
+    <div class="tblwrap"><table class="tbl">
+      <tr><th>Sanctioned by</th><th>Delay allowed</th><th>Condoned by</th><th>Interest</th></tr>
+      <tr><td>Board, MCB, CAC-I/II/III, ZLCC</td><td>Up to 2 months</td><td>CAC-III</td><td>1 month: MCLR+2%; 2 months: MCLR+4%</td></tr>
+      <tr><td>RLCC</td><td>Up to 1 month</td><td>ZLCC</td><td>MCLR+2%</td></tr>
+    </table></div>
+    <p class="note">Only when at least 50% of the sanctioned amount came in within the original period. Beyond 2 months the OTS is cancelled and all recovery action restarts with notice to the borrower.</p>
+  </div>
+</section>
+
+<!-- WHERE -->
+<section class="pane matrix" id="where">
+  <h2>Which recovery steps can be finished on the website</h2>
+  <p class="lead">The website can calculate, draft, track and remind. Anything the law needs signed, served, filed, seized or entered in CBS still happens outside it, and the website records the date once it is done.</p>
+  <div id="whereOut"></div>
+</section>
+
+<!-- SCHEMA -->
+<section class="pane schema" id="schema">
+  <h2>Data schema</h2>
+  <p class="lead">Two layers. The upload sheet is one row per NPA account so you can start from your existing NPA list today. The full schema splits the same data into linked tables for when this runs on a server with many users.</p>
+  <div class="card">
+    <h3>Upload sheet columns (one row per account)</h3>
+    <p class="note">Dates as dd-mm-yyyy or yyyy-mm-dd. Amounts in ₹ lakh unless the column says crore. Y/N columns accept Y or N. Blank is allowed for anything not yet done.</p>
+    <div class="bar"><button class="btn small" id="copyHdr">Copy header row</button></div>
+    <div class="tblwrap"><table class="tbl" id="colTable"></table></div>
+  </div>
+  <div id="fullSchema"></div>
+</section>
+
+</main>
+
+<dialog id="dlg">
+  <div class="dh"><b id="dlgTitle">Add account</b><button class="btn small" id="dlgClose">Close</button></div>
+  <div class="db"><form id="accForm" method="dialog"></form>
+    <div class="bar"><button class="btn primary" id="saveAcc">Save account</button></div></div>
+</dialog>
+<dialog id="csvDlg">
+  <div class="dh"><b>Accounts as CSV</b><button class="btn small" id="csvClose">Close</button></div>
+  <div class="db"><p class="note">Select all and copy, then paste into Excel or a .csv file.</p><textarea class="csv" id="csvText" readonly></textarea></div>
+</dialog>
+<dialog id="pasteDlg">
+  <div class="dh"><b>Paste CSV</b><button class="btn small" id="pasteClose">Close</button></div>
+  <div class="db"><p class="note">Open your file in Excel or Notepad, copy all rows including the header row, and paste here.</p><textarea class="csv" id="pasteText"></textarea><div class="bar"><button class="btn primary" id="pasteGo">Import</button></div></div>
+</dialog>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- field definitions (also the upload schema) ---------- */
+const YN=['','Y','N'];
+const FIELDS=[
+ // key,label,type,options,group,help
+ ['account_no','Account number','text',null,'Account','Unique; required'],
+ ['borrower','Borrower name','text',null,'Account','Required'],
+ ['branch','Branch / office','text',null,'Account',''],
+ ['office_type','Held at','select',['Branch','ARB','SAMB'],'Account','Branch, ARB or SAMB'],
+ ['segment','Segment','select',['MSME','Retail','Housing','Education','Agri','Corporate','CreditCard','GoldLoan','Vehicle'],'Account',''],
+ ['constitution','Constitution','select',['Individual','Proprietorship','Partnership','Company','LLP','Trust/Society'],'Account',''],
+ ['msme','Registered MSME','select',YN,'Account','Y/N'],
+ ['rl_lakh','Running ledger balance (₹ lakh)','number',null,'Account','Required'],
+ ['contractual_dues_lakh','Total contractual dues (₹ lakh)','number',null,'Account','RL + dummy ledger + charges'],
+ ['npa_date','Date of NPA','date',null,'Account','Required'],
+ ['asset_class','Asset class','select',['','Sub-standard','Doubtful-1','Doubtful-2','Doubtful-3','Loss'],'Account',''],
+ ['provision_pct','Provision held (%)','number',null,'Account',''],
+ ['group_exposure_cr','Borrower + group exposure in banking system (₹ crore)','number',null,'Account','Used for LOC test'],
+ ['security_type','Main security','select',['Immovable','Movable (P&M/stock)','Agri land','Vehicle','Gold','Pledged shares','None'],'Security & SARFAESI',''],
+ ['security_fmv_lakh','Fair market value (₹ lakh)','number',null,'Security & SARFAESI',''],
+ ['security_rv_lakh','Realisable value (₹ lakh)','number',null,'Security & SARFAESI',''],
+ ['valuation_date','Latest valuation date','date',null,'Security & SARFAESI','Valid 2 years'],
+ ['sarfaesi_eligible','SARFAESI applicable','select',YN,'Security & SARFAESI','Y/N'],
+ ['cersai_done','CERSAI charge registered','select',YN,'Security & SARFAESI','Y/N'],
+ ['notice_13_2_date','Sec 13(2) notice date','date',null,'Security & SARFAESI',''],
+ ['possession_13_4_date','Sec 13(4) symbolic possession date','date',null,'Security & SARFAESI',''],
+ ['sec14_filed_date','Sec 14 application date','date',null,'Security & SARFAESI',''],
+ ['physical_possession','Physical possession taken','select',YN,'Security & SARFAESI','Y/N'],
+ ['auctions_failed','Failed auctions so far','number',null,'Security & SARFAESI',''],
+ ['pledged_shares','Shares pledged','select',YN,'Security & SARFAESI','Y/N'],
+ ['pledge_invoked','Pledge invoked','select',YN,'Security & SARFAESI','Y/N'],
+ ['resolution_plan_date','Resolution plan decided on','date',null,'Legal',''],
+ ['suit_forum','Suit / case forum','select',['','DRT','Civil court','Revenue Recovery','Lok Adalat'],'Legal',''],
+ ['suit_filed_date','Suit / OA filed on','date',null,'Legal',''],
+ ['decree_obtained','Decree / RC obtained','select',YN,'Legal','Y/N'],
+ ['fraud_status','Fraud / wilful status','select',['None','RFA','Fraud','Wilful'],'Legal',''],
+ ['wd_examined','Wilful / fraud examination done','select',YN,'Legal','Y/N'],
+ ['staff_accountability','Staff accountability examined','select',YN,'Legal','Y/N'],
+ ['asset_tracing_done','Asset tracing done','select',YN,'Legal','Y/N'],
+ ['nclt_status','NCLT status','select',['None','Filed','Admitted','Liquidation'],'Legal',''],
+ ['cirp_date','CIRP initiated on','date',null,'Legal',''],
+ ['guarantors','Number of guarantors','number',null,'Legal',''],
+ ['flight_risk','Reliable information of flight risk','select',YN,'Legal','Y/N'],
+ ['consortium','Consortium / multiple banking','select',YN,'Other status','Y/N'],
+ ['bank_share_pct','Our share in consortium (%)','number',null,'Other status',''],
+ ['unit_status','Unit status','select',['','Running','Closed'],'Other status',''],
+ ['means_lakh','Means of borrowers/guarantors (₹ lakh)','number',null,'Other status','Excluding charged assets'],
+ ['legal_position','Documents / mortgage','select',['','OK','Defective'],'Other status',''],
+ ['cgtmse_cover','CGTMSE / CGFMU cover','select',YN,'Other status','Y/N'],
+ ['claim_lodged','Guarantee claim lodged','select',YN,'Other status','Y/N'],
+ ['ra_engaged_date','Recovery agent engaged on','date',null,'Other status','6-month tenure'],
+ ['hoo_allowed','Holding on operations allowed','select',YN,'Other status','Y/N'],
+ ['hoo_review_date','Last HOO review','date',null,'Other status',''],
+ ['restructured','Restructured in NPA','select',YN,'Other status','Y/N'],
+ ['restructure_review_date','Last restructuring review','date',null,'Other status',''],
+ ['ots_status','OTS status','select',['None','Offered','Sanctioned','Failed'],'Other status',''],
+ ['last_visit_date','Last security verification visit','date',null,'Other status',''],
+ ['status_report_date','Last status report to RO/ZO','date',null,'Other status',''],
+ ['remarks','Remarks','text',null,'Other status','']
+];
+const KEYS=FIELDS.map(f=>f[0]);
+
+/* ---------- helpers ---------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const T0=(()=>{const d=new Date();d.setHours(0,0,0,0);return d})();
+function pd(s){if(!s)return null;s=String(s).trim();let m;
+ if(m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/))return new Date(+m[1],m[2]-1,+m[3]);
+ if(m=s.match(/^(\d{1,2})[-\/.](\d{1,2})[-\/.](\d{4})$/))return new Date(+m[3],m[2]-1,+m[1]);return null}
+const iso=d=>d?`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`:'';
+const fd=d=>d?`${String(d.getDate()).padStart(2,'0')}-${String(d.getMonth()+1).padStart(2,'0')}-${d.getFullYear()}`:'—';
+const addD=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+const addM=(d,n)=>{const x=new Date(d);x.setMonth(x.getMonth()+n);return x};
+const dd=(a,b)=>Math.round((a-b)/864e5);
+const Y=v=>/^y/i.test(String(v||'').trim());
+const num=v=>{const n=parseFloat(String(v??'').replace(/,/g,''));return isNaN(n)?0:n};
+const L=v=>'₹'+num(v).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2})+' L';
+function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(t._h);t._h=setTimeout(()=>t.style.display='none',2200)}
+
+/* ---------- storage ---------- */
+let ACC=[];
+function load(){try{const s=localStorage.getItem('rd_accounts');ACC=s?JSON.parse(s):[]}catch(e){ACC=[]}}
+function save(){try{localStorage.setItem('rd_accounts',JSON.stringify(ACC))}catch(e){}}
+
+/* ---------- where a step happens ---------- */
+const W={
+ web:['Website','w-web'], prep:['Website + sign-off','w-prep'], field:['Field','w-field'],
+ court:['Court / tribunal','w-court'], auth:['Revenue office','w-court'], portal:['External portal','w-portal'], cbs:['CBS / Finacle','w-cbs']
+};
+
+/* ---------- rule engine ---------- */
+function suitAuthority(lakh,card){ if(card)return 'Regional Head (standalone card)';
+ if(lakh<=25)return 'Branch Head Scale I/II'; if(lakh<=100)return 'Branch Head Scale III';
+ if(lakh<=1000)return 'Branch Head Scale IV'; if(lakh<=2500)return 'Branch Head Scale V';
+ if(lakh<=5000)return 'Regional Head / Branch Head Scale VI'; return 'Zonal Head'}
+function lastQuarterDue(){const y=T0.getFullYear();const c=[new Date(y,0,7),new Date(y,3,7),new Date(y,6,7),new Date(y,9,7)].filter(d=>d<=T0);return c.length?c[c.length-1]:new Date(y-1,9,7)}
+
+function analyse(a){
+ const tasks=[],routes=[];const npa=pd(a.npa_date);const rl=num(a.rl_lakh);
+ const days=npa?dd(T0,npa):null;const ageY=days!=null?days/365:0;
+ const seg=a.segment||'';const card=seg==='CreditCard';const fraud=['Fraud','Wilful'].includes(a.fraud_status);
+ const company=['Company','LLP'].includes(a.constitution);const office=a.office_type||'Branch';
+ const add=(t,para,due,done,where,note)=>tasks.push({t,para,due,done:!!done,where,note});
+ if(!npa){add('Enter the date of NPA','—',null,false,'web','Timelines are counted from this date.');return {tasks,routes,days,ageY}}
+
+ // Routes
+ if(fraud)routes.push({l:'Fraud / wilful track',w:1});
+ if(a.nclt_status==='Admitted'||a.nclt_status==='Liquidation')routes.push({l:'NCLT: act through CoC'});
+ if(card)routes.push({l:'Card settlement formula'});
+ else if(seg==='GoldLoan')routes.push({l:'Gold auction, then settle'});
+ else if(seg==='Vehicle')routes.push({l:'Vehicle seizure and sale'});
+ if(Y(a.sarfaesi_eligible)&&!card)routes.push({l:'SARFAESI'});
+ if(!card&&a.nclt_status!=='Admitted')routes.push({l:rl>=20?'DRT suit in parallel':'Civil suit / RR'});
+ if(a.security_type==='Agri land'&&!Y(a.sarfaesi_eligible))routes.push({l:'Revenue Recovery + recovery camp'});
+ if(company&&rl>=100&&(!a.nclt_status||a.nclt_status==='None'))routes.push({l:'Evaluate NCLT'});
+ if(Y(a.hoo_allowed))routes.push({l:'Holding on operations'});
+ if(a.ots_status==='Offered'||a.ots_status==='Sanctioned')routes.push({l:'OTS in process'});
+ else if(!fraud)routes.push({l:'OTS negotiable'});
+ if(ageY>=2&&num(a.provision_pct)>=100)routes.push({l:'ARC / write-off review'});
+
+ // 1. Status report (para 4)
+ {const lq=lastQuarterDue();const sr=pd(a.status_report_date);
+  let due,done;
+  if(days<=100&&!sr){due=addD(npa,7);done=false}
+  else{done=sr&&sr>=addD(lq,-45);due=done?(()=>{const n=new Date(lq);n.setMonth(n.getMonth()+3);return n})():lq}
+  add('Status report to '+(office==='Branch'?'RO':'ZO')+(rl>=500?' (and status note to SAMV, CO: RL ₹5 Cr+)':''),'Para 4',due,done,'web','New NPAs within 7 days of slippage; then every quarter before the 7th of the next month.')}
+
+ // 2. Resolution plan within 90 days (para 21.1)
+ add('Decide the resolution plan','Para 21.1',addD(npa,90),!!pd(a.resolution_plan_date),'prep',
+  'Decided by '+(rl<=500?'Regional Head':rl<=5000?'Zonal Head':'SAMV, Central Office')+' based on RL. Recorded here; decision taken by the authority.');
+
+ // 3. Wilful/fraud examination
+ add('Examine the account for wilful default / fraud','Para 5.3',null,Y(a.wd_examined),'prep','Required in all eligible NPA accounts under the Wilful Defaulters policy.');
+
+ // 4. Physical verification
+ if(a.security_type!=='None'&&!card){const lv=pd(a.last_visit_date);const due=lv?addD(lv,90):addD(npa,7);
+  add('Visit and verify primary and collateral securities','Para 31',due,lv&&dd(T0,lv)<=90,'field','Check title deeds are intact, look for dilution, and follow up the obligants. Contact borrowers only between 07:00 and 19:00.')}
+
+ // 5. SARFAESI
+ if(Y(a.sarfaesi_eligible)&&!card){
+  const n132=pd(a.notice_13_2_date),n134=pd(a.possession_13_4_date),s14=pd(a.sec14_filed_date),val=pd(a.valuation_date);
+  add('Register / confirm security interest on CERSAI','Para 21.2',addD(npa,7),Y(a.cersai_done),'portal','Must be in place before the 13(2) notice. Gives priority over statutory dues.');
+  add('Issue demand notice u/s 13(2)','Para 21.2',addD(npa,7),!!n132,'prep','Drafted here; signed and served by an Authorised Officer of Scale IV or above. If returned unserved, paper publication and affixation within days 7–15. Not starting SARFAESI needs Zonal Head permission.');
+  {const due=n132?new Date(Math.max(addD(npa,90),addD(n132,61))):addD(npa,90);
+   add('Take symbolic possession u/s 13(4) and publish notice within 7 days','Para 21.2',due,!!n134,'field','Only after the 60-day notice period. File caveat where needed.')}
+  const valOK=val&&dd(addD(val,730),T0)>60;
+  add('Get valuation and fix reserve price'+(num(a.security_fmv_lakh)>=100?' (two valuers: value ₹1 Cr+)':''),'Para 21.2.5',val?addD(val,730):addD(npa,90),valOK,'prep',
+   val&&dd(addD(val,730),T0)>=0?'Valuation is valid till '+fd(addD(val,730))+'. Reserve price = FMV × value index (85% land/buildings, 75% tenanted/litigated, 50% P&M, 60% stock, 65% vehicles).':'No valid valuation on record (reports expire after 2 years). Get a fresh report before any auction or OTS.');
+  if(!Y(a.physical_possession))add('File Sec 14 application before CMM/DM/CJM for physical possession','Para 21.2',addD(npa,90),!!s14,'court','');
+  if(n134||Y(a.physical_possession)){
+   const af=num(a.auctions_failed);
+   add('Issue 30-day sale notice and hold e-auction','Para 21.2',addD(npa,165),af>0,'portal','Sale notice by day 100, e-auction by day 165, sale money within 15 days of auction.');
+   if(af>=1)add('Re-auction with reserve price reduced by 10% ('+(af+1)+(af===1?'nd':af===2?'rd':'th')+' attempt)','Para 21.2.6',null,false,'prep',
+    af>=4?'After 4 reductions only ZLCC can reduce further.':'Reduction allowed after each failed auction; see "Who approves".');
+   if(af>=2)add('Consider private treaty sale','Para 21.2.8',null,false,'prep','Allowed after at least 2 sale attempts. Price not below last failed reserve price; 15 days notice to borrower, mortgagor and guarantors.');
+  }
+ }else if(!card&&num(a.security_rv_lakh)>0&&!Y(a.sarfaesi_eligible)){
+  add('Security is outside SARFAESI: rely on suit / RR and attach assets','Para 5',null,false,'prep','Agricultural land and non-compliant securities count as "difficult to market" in the OTS score.');
+ }
+
+ // 6. Suit / OA
+ {
+  const suit=pd(a.suit_filed_date);const claim=num(a.contractual_dues_lakh)||rl;
+  if(!(a.nclt_status==='Admitted'||a.nclt_status==='Liquidation')){
+   const forum=card?'DRT/Civil court':claim>=20?'DRT (claim ₹20 lakh and above)':(a.security_type==='Agri land'?'Revenue Recovery or Civil court':'Civil court / Lok Adalat');
+   add('Get permission to file suit and keep documents ready','Para 21.1',addD(npa,90),!!suit,'prep','Permission by '+suitAuthority(claim,card)+'.');
+   add('File the suit / OA in '+forum,'Para 21.1',addD(npa,125),!!suit,'court','Advocate drafts in 15 days, law officer approves in 10, filing within 25/35 days of entrustment.');
+  }
+  if(Y(a.decree_obtained))add('Execute the decree / recovery certificate','Para 5.2',null,false,'court','Attach and sell assets of the judgment debtors.');
+ }
+
+ // 7. Pledged shares
+ if(Y(a.pledged_shares))add('Invoke pledge and sell pledged shares','Para 33',addD(npa,7),Y(a.pledge_invoked),'prep','Sole lender: within a week of NPA. Consortium: call / request a meeting immediately. Listed shares through the exchange with Treasury, CO.');
+
+ // 8. Asset tracing
+ if(rl>=300||fraud)add('Trace other assets and attach them through court','Para 7',null,Y(a.asset_tracing_done),'field','Mandatory for RL ₹3 Cr and above and for every fraud/wilful account. Use empanelled investigation agencies.');
+
+ // 9. Transfer to ARB/SAMB
+ if(office==='Branch'&&!Y(a.restructured)){
+  if(a.nclt_status==='Admitted'||rl>2500)add('Transfer the account to the SAM Branch','Para 32',null,false,'cbs','Exposure above ₹25 Cr or NCLT admitted. Approved by Zonal Head.');
+  else if(rl>20)add('Transfer the account to the Asset Recovery Branch','Para 32',null,false,'cbs','RL above ₹20 lakh up to ₹25 Cr (non-NCLT). Approved by Zonal Head.');
+ }
+
+ // 10. CGTMSE
+ if(Y(a.cgtmse_cover))add('Lodge the credit guarantee claim','Para 5.3',null,Y(a.claim_lodged),'portal','Share later recoveries with the guarantor in the same proportion.');
+
+ // 11. NCLT / PPIRP
+ if(company&&(!a.nclt_status||a.nclt_status==='None')){
+  if(rl>=100)add('Evaluate referral to NCLT (CIRP)','Para 23',null,false,'prep','ZLCC decides on RO recommendation. Suits when the unit is viable or asset-heavy, our CoC vote share is adequate and security enforcement has been tried.');
+  if(Y(a.msme)&&rl>=10)add('Check eligibility for pre-packaged insolvency (PPIRP)','Chapter V',null,false,'prep','MSME company or LLP, default ₹10 lakh and above, no CIRP/PPIRP in the last 3 years, Sec 29A met.');
+ }
+ if((a.nclt_status==='Filed'||a.nclt_status==='Admitted')&&num(a.guarantors)>0){const c=pd(a.cirp_date);
+  add('File suit in DRT against guarantors; continue SARFAESI on their assets','Para 21.1',c?addD(c,90):null,false,'court','Within 3 months of CIRP starting. Consider personal insolvency against personal guarantors.')}
+
+ // 12. Fraud
+ if(fraud){
+  add('Keep criminal action running (FIR / CBI) and report developments to FMD','Para 8.4',null,false,'court','Criminal case is separate from recovery and is never withdrawn on settlement.');
+  add('Initiate staff accountability before any OTS','Para 8.4.2.5',null,Y(a.staff_accountability),'prep','Must be finalised before the OTS is implemented. Only MCB can approve OTS or release of security.');
+ }
+
+ // 13. LOC
+ if(num(a.group_exposure_cr)>=50&&Y(a.flight_risk))add('Place a Look Out Circular request before the scrutiny committee','Chapter VI',null,false,'prep','Combined exposure ₹50 Cr and above and reliable flight-risk information. Approved by MD&CEO; issued by MHA.');
+
+ // 14. RA / BC
+ {const ra=pd(a.ra_engaged_date);
+  if(ra){const exp=addM(ra,6);add('Recovery agent tenure ends: review, withdraw or extend','Chapter III-B.4',exp,false,'prep','6 months per engagement; extension of 6 months by Regional Head (Zonal Head for ARB/SAMB).')}
+  else if(rl<=10&&['Retail','Agri','MSME','Education'].includes(seg))add('Consider a Business Correspondent as recovery agent','Chapter III-B.6',null,false,'prep','Allowed up to ₹10 lakh. Fee 3% of recovery (NPA under 2 years) or 5% (over 2 years).');
+ }
+
+ // 15. HOO / restructured reviews
+ if(Y(a.hoo_allowed)){const r=pd(a.hoo_review_date);add('Half-yearly review of holding on operations','Para 41.2',r?addM(r,6):T0,false,'prep','Reviewed by the authority that allowed HOO. Cut-back must be taken daily on business credits.')}
+ if(Y(a.restructured)){const r=pd(a.restructure_review_date);add('Half-yearly review of restructured account','Para 41.1',r?addM(r,6):T0,false,'prep','')}
+
+ // 16. OTS state
+ if(card)add('Work out card settlement by age of NPA','Para 8.2',null,false,'web','See the card table in "OTS check".');
+ if(seg==='GoldLoan')add('Auction the pledged gold before settling the balance','Para 8.13',null,false,'portal','');
+ if(seg==='Vehicle')add('Seize the vehicle after notices and a cost-benefit check','Para 40',null,false,'field','Under SARFAESI or the Contract Act, following natural justice.');
+ if(a.ots_status==='Offered')add('Run module score and NPV, then place through SAC','Para 8 & 17',null,false,'prep',(fraud?'Fraud/wilful: MCB only, and inform the investigating agency 30 days before implementing. ':'')+(a.suit_filed_date?'Case pending: settlement needs a consent decree. ':'')+'Collect 10% upfront.');
+ if(a.ots_status==='Sanctioned')add('Watch OTS payments against the schedule','Para 11 & 20',null,false,'cbs','Delay can be condoned for up to 2 months only if 50% was received on time. Update PAN in CBS before closing so CIC data shows the settlement.');
+ if(a.ots_status==='Failed')add('Restart all legal actions with notice to the borrower','Para 20',null,false,'prep','Recoveries after cancellation are normal recoveries (para 13.1).');
+
+ // Running recovery procedures (SARFAESI and suit are already covered above)
+ if(a.proc){const nrun=Object.keys(a.proc).length;if(nrun)routes.push({l:nrun+' procedure'+(nrun>1?'s':'')+' tracked'});
+  METHODS.forEach(m=>{const run=a.proc[m.k];if(!run||m.k==='sarfaesi'||m.k==='suit')return;
+  const j=m.steps.findIndex((s,i)=>!stepDone(a,m,run,i));if(j<0)return;const st=m.steps[j];
+  add(m.n+': '+st.t,m.para,stepDue(a,m,run,j),false,st.w,'Next step '+(j+1)+' of '+m.steps.length+'. Update it in Recovery procedures.')})}
+
+ // 17. Balance-sheet options
+ if(num(a.provision_pct)>=100&&(a.suit_filed_date||a.notice_13_2_date))add('Candidate for technical write-off (only on CO advice)','Para 15',null,false,'prep','SAMV identifies accounts. Recovery continues and the write-off is never disclosed to the borrower.');
+ if(ageY>=2&&num(a.provision_pct)>=100&&(a.ots_status||'None')==='None')add('Test comparative merit for ARC assignment','Chapter II-7',null,false,'prep','No cash recovery or OTS likely in 6–12 months, high carrying cost.');
+ if(['Agri','Retail','MSME'].includes(seg)&&rl<=100&&!fraud)add('Invite to the next recovery camp (Rin Mukti Shivir)','Para 34',null,false,'field','');
+
+ return {tasks,routes,days,ageY};
+}
+function status(t){ if(t.done)return 'Done'; if(!t.due)return 'Check'; const g=dd(t.due,T0); if(g<0)return 'Overdue'; if(g<=15)return 'Due'; return 'Open'}
+const stLabel={Done:'Done',Check:'To check',Overdue:'Overdue',Due:'Due soon',Open:'Upcoming'};
+
+/* ---------- NPA clock ---------- */
+function clock(a,res){
+ if(res.days==null)return '';
+ const MAX=200,pct=v=>Math.min(100,Math.max(0,v/MAX*100));
+ const s=Y(a.sarfaesi_eligible);
+ const ms=[
+  {d:7,l:'CERSAI and 13(2) notice',done:!s||(Y(a.cersai_done)&&!!a.notice_13_2_date)},
+  {d:90,l:'Resolution plan, 13(4), valuation, Sec 14',done:!!a.resolution_plan_date&&(!s||!!a.possession_13_4_date)},
+  {d:125,l:'Suit / OA filed',done:!!a.suit_filed_date||a.segment==='CreditCard'},
+  {d:165,l:'E-auction held',done:!s||num(a.auctions_failed)>0},
+  {d:180,l:'Sale money or re-auction',done:!s}
+ ];
+ const now=res.days;
+ const ticks=ms.map(m=>{const cls=m.done?'done':(now>m.d?'late':'');return `<span class="tick ${cls}" style="left:${pct(m.d)}%"><i>${m.d}</i></span>`}).join('');
+ const leg=ms.map(m=>`<div class="${m.done?'done':(now>m.d?'late':'')}">Day ${m.d}: ${m.l}</div>`).join('');
+ const npa=pd(a.npa_date);
+ return `<div class="clock"><div class="cap"><span>NPA on <b>${fd(npa)}</b></span><span>Age <b>${(res.days/365).toFixed(1)} years</b> (${res.days} days)</span></div>
+ <div class="rail" aria-label="Day ${now} since NPA"><span class="track"></span><span class="fill" style="width:${pct(now)}%"></span>${ticks}
+ <span class="now" style="left:${Math.min(96,Math.max(4,pct(now)))}%">${now>MAX?'Day '+now+' (beyond the 180-day clock)':'Today: day '+now}</span></div>
+ <div class="legend">${leg}</div></div>`;
+}
+
+/* ---------- render list ---------- */
+let OPEN=new Set();
+function render(){
+ renderMethods();
+ if(typeof renderSR==='function'&&document.activeElement&&!document.activeElement.closest('#sr_form'))renderSR();
+ const q=$('#q').value.trim().toLowerCase(),f=$('#flt').value;
+ let tot={acc:0,over:0,soon:0,fraud:0,rl:0};
+ const rows=ACC.map((a,i)=>{const r=analyse(a);const sts=r.tasks.map(status);
+  return {a,i,r,over:sts.filter(s=>s==='Overdue').length,soon:sts.filter(s=>s==='Due').length}});
+ rows.forEach(x=>{tot.acc++;tot.rl+=num(x.a.rl_lakh);tot.over+=x.over;tot.soon+=x.soon;if(['Fraud','Wilful'].includes(x.a.fraud_status))tot.fraud++});
+ $('#summary').innerHTML=`<div><b>${tot.acc}</b><span>accounts</span></div><div><b>${L(tot.rl).replace(' L','')}</b><span>total RL (₹ lakh)</span></div><div class="r"><b>${tot.over}</b><span>overdue steps</span></div><div class="a"><b>${tot.soon}</b><span>steps due in 15 days</span></div><div><b>${tot.fraud}</b><span>fraud / wilful</span></div>`;
+ let vis=rows.filter(x=>{const hay=(x.a.account_no+' '+x.a.borrower+' '+x.a.branch).toLowerCase();
+  if(q&&!hay.includes(q))return false; if(f==='over'&&!x.over)return false; if(f==='soon'&&!x.soon)return false;
+  if(f==='fraud'&&!['Fraud','Wilful'].includes(x.a.fraud_status))return false; return true});
+ vis.sort((a,b)=>b.over-a.over||b.soon-a.soon||num(b.a.rl_lakh)-num(a.a.rl_lakh));
+ if(!ACC.length){$('#list').innerHTML=`<div class="empty">No accounts yet. Load your NPA list as a CSV (columns are in the Data schema tab), add one account, or load the sample accounts to see how it works.</div>`;return}
+ if(!vis.length){$('#list').innerHTML=`<div class="empty">No account matches this search or filter.</div>`;return}
+ $('#list').innerHTML=vis.map(x=>{const {a,r}=x;const id=a.account_no;
+  const cls=x.over?'hasover':x.soon?'hassoon':'clean';
+  const order={Overdue:0,Due:1,Check:2,Open:3,Done:4};
+  const ts=[...r.tasks].sort((p,q)=>order[status(p)]-order[status(q)]||((p.due||9e15)-(q.due||9e15)));
+  return `<article class="acc ${cls} ${OPEN.has(id)?'open':''}" data-id="${esc(id)}">
+  <button class="head" aria-expanded="${OPEN.has(id)}"><div><div class="nm">${esc(a.borrower||'(no name)')}</div>
+   <div class="meta">A/c ${esc(a.account_no)} · ${esc(a.branch||'')} ${a.office_type&&a.office_type!=='Branch'?'('+esc(a.office_type)+')':''} · RL ${L(a.rl_lakh)} · ${esc(a.segment||'')}</div></div>
+   <div class="counts">${x.over?`<span class="o">${x.over} overdue</span><br>`:''}${x.soon?`<span class="s">${x.soon} due soon</span>`:(!x.over?'<span>On track</span>':'')}</div>
+   <div class="chips">${r.routes.map(t=>`<span class="chip ${t.w?'warn':''}">${esc(t.l)}</span>`).join('')}</div></button>
+  <div class="detail">${clock(a,r)}
+   <ul class="tasks">${ts.map(t=>{const s=status(t);return `<li><span class="st ${s}">${stLabel[s]}</span><span class="tt">${esc(t.t)}</span>
+    ${t.note?`<span class="nt">${esc(t.note)}</span>`:''}
+    <span class="ft"><span class="where ${W[t.where][1]}">${W[t.where][0]}</span>${t.due?`<span>Due ${fd(t.due)}</span>`:''}<span class="para">${esc(t.para)}</span></span></li>`}).join('')}</ul>
+   <div class="bar"><button class="btn small" data-act="edit">Edit / update dates</button><button class="btn small" data-act="meth">Recovery procedures</button><button class="btn small" data-act="sr">Status report</button><button class="btn small" data-act="ots">Open in OTS check</button><button class="btn small danger" data-act="del">Delete</button></div>
+  </div></article>`}).join('');
+}
+$('#list').addEventListener('click',e=>{
+ const art=e.target.closest('.acc');if(!art)return;const id=art.dataset.id;
+ const act=e.target.closest('[data-act]');
+ if(act){const a=ACC.find(x=>x.account_no===id);
+  if(act.dataset.act==='edit')openForm(a);
+  if(act.dataset.act==='del'&&confirm('Delete account '+id+'?')){ACC=ACC.filter(x=>x.account_no!==id);save();render();toast('Account deleted')}
+  if(act.dataset.act==='ots')toOTS(a);
+  if(act.dataset.act==='meth')toMethods(a);
+  if(act.dataset.act==='sr')toSR(a);return}
+ if(e.target.closest('.head')){OPEN.has(id)?OPEN.delete(id):OPEN.add(id);render()}
+});
+$('#q').addEventListener('input',render);$('#flt').addEventListener('change',render);
+
+/* ---------- form ---------- */
+let EDIT=null;
+function openForm(a){EDIT=a?a.account_no:null;$('#dlgTitle').textContent=a?'Update '+a.account_no:'Add account';
+ const groups=[...new Set(FIELDS.map(f=>f[4]))];
+ $('#accForm').innerHTML=groups.map(g=>`<h4>${g}</h4><div class="grid2">${FIELDS.filter(f=>f[4]===g).map(([k,l,t,o])=>{
+  const v=a?(a[k]??''):'';
+  if(t==='select')return `<label class="f">${l}<select name="${k}">${o.map(x=>`<option value="${x}" ${String(v)===x?'selected':''}>${x||'—'}</option>`).join('')}</select></label>`;
+  if(t==='date')return `<label class="f">${l}<input type="date" name="${k}" value="${iso(pd(v))}"></label>`;
+  return `<label class="f">${l}<input type="${t==='number'?'number':'text'}" step="any" name="${k}" value="${esc(v)}"></label>`}).join('')}</div>`).join('');
+ $('#dlg').showModal()}
+$('#addBtn').onclick=()=>openForm(null);
+$('#dlgClose').onclick=()=>$('#dlg').close();
+$('#saveAcc').onclick=()=>{const fdata=new FormData($('#accForm'));const o={};KEYS.forEach(k=>o[k]=(fdata.get(k)||'').toString().trim());
+ if(!o.account_no||!o.borrower||!o.npa_date||!o.rl_lakh){toast('Account number, borrower, RL and NPA date are required');return}
+ const i=ACC.findIndex(x=>x.account_no===(EDIT||o.account_no));
+ if(EDIT===null&&i>=0){toast('Account '+o.account_no+' already exists');return}
+ if(i>=0)ACC[i]={...ACC[i],...o};else ACC.push(o);OPEN.add(o.account_no);save();render();$('#dlg').close();toast(i>=0?'Account updated':'Account added')};
+
+/* ---------- CSV ---------- */
+function parseCSV(t){const rows=[];let r=[],c='',q=false;
+ for(let i=0;i<t.length;i++){const ch=t[i];
+  if(q){if(ch==='"'){if(t[i+1]==='"'){c+='"';i++}else q=false}else c+=ch}
+  else if(ch==='"')q=true; else if(ch===','){r.push(c);c=''} else if(ch==='\n'){r.push(c);rows.push(r);r=[];c=''} else if(ch!=='\r')c+=ch}
+ if(c!==''||r.length){r.push(c);rows.push(r)}return rows.filter(x=>x.some(v=>v.trim()!==''))}
+$('#csvBtn').addEventListener('click',()=>{const i=$('#csvIn');i.value='';i.click()});
+function importCSV(text){const rows=parseCSV(text);if(rows.length<2){toast('The file has no data rows');return false}
+  const h=rows[0].map(x=>x.trim().toLowerCase().replace(/\s+/g,'_'));
+  const miss=['account_no','borrower','rl_lakh','npa_date'].filter(k=>!h.includes(k));
+  if(miss.length){toast('Missing columns: '+miss.join(', '));return false}
+  let n=0,u=0;rows.slice(1).forEach(r=>{const o={};KEYS.forEach(k=>{const j=h.indexOf(k);o[k]=j>=0?(r[j]||'').trim():''});
+   FIELDS.filter(f=>f[2]==='date').forEach(f=>{const d=pd(o[f[0]]);o[f[0]]=d?iso(d):''});
+   if(!o.account_no)return;const i=ACC.findIndex(x=>x.account_no===o.account_no);if(i>=0){ACC[i]={...ACC[i],...o};u++}else{ACC.push(o);n++}});
+  save();render();toast(`${n} added, ${u} updated`);return true}
+function readCSVFile(f){if(!f)return;const rd=new FileReader();rd.onerror=()=>toast('Could not read the file');rd.onload=()=>importCSV(rd.result);rd.readAsText(f)}
+$('#csvIn').addEventListener('change',e=>{readCSVFile(e.target.files[0]);e.target.value=''});
+$('#pasteBtn').onclick=()=>{$('#pasteText').value='';$('#pasteDlg').showModal()};
+$('#pasteClose').onclick=()=>$('#pasteDlg').close();
+$('#pasteGo').onclick=()=>{if(importCSV($('#pasteText').value))$('#pasteDlg').close()};
+['dragover','drop'].forEach(ev=>document.addEventListener(ev,e=>{if(!e.dataTransfer||![...e.dataTransfer.types].includes('Files'))return;e.preventDefault();if(ev==='drop')readCSVFile(e.dataTransfer.files[0])}));
+function toCSV(list){const q=v=>{v=String(v??'');return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
+ return [KEYS.join(','),...list.map(a=>KEYS.map(k=>q(k.endsWith('_date')?(a[k]?fd(pd(a[k])):''):a[k])).join(','))].join('\n')}
+$('#exportBtn').onclick=()=>{if(!ACC.length){toast('No accounts to copy');return}$('#csvText').value=toCSV(ACC);$('#csvDlg').showModal();$('#csvText').select()};
+$('#csvClose').onclick=()=>$('#csvDlg').close();
+$('#clearBtn').onclick=()=>{if(ACC.length&&confirm('Remove all accounts from this browser?')){ACC=[];OPEN.clear();save();render();toast('All accounts removed')}};
+
+const SAMPLE=[
+ {account_no:'SMP-1001',borrower:'Shree Ganesh Traders',branch:'Civil Lines',office_type:'Branch',segment:'MSME',constitution:'Proprietorship',msme:'Y',rl_lakh:'85',contractual_dues_lakh:'91',npa_date:'2026-08-10',asset_class:'Sub-standard',provision_pct:'15',security_type:'Immovable',security_fmv_lakh:'120',security_rv_lakh:'102',valuation_date:'2024-02-01',sarfaesi_eligible:'Y',cersai_done:'Y',notice_13_2_date:'2026-08-14',last_visit_date:'2026-08-20',status_report_date:'2026-08-15',guarantors:'1',means_lakh:'30',legal_position:'OK',cgtmse_cover:'Y',claim_lodged:'N',ots_status:'None',unit_status:'Running'},
+ {account_no:'SMP-1002',borrower:'Kaveri Agro Foods Pvt Ltd',branch:'ARB Central',office_type:'ARB',segment:'MSME',constitution:'Company',msme:'Y',rl_lakh:'640',contractual_dues_lakh:'905',npa_date:'2024-11-30',asset_class:'Doubtful-1',provision_pct:'100',security_type:'Immovable',security_fmv_lakh:'520',security_rv_lakh:'450',valuation_date:'2024-12-20',sarfaesi_eligible:'Y',cersai_done:'Y',notice_13_2_date:'2024-12-05',possession_13_4_date:'2025-02-20',sec14_filed_date:'2025-03-10',physical_possession:'Y',auctions_failed:'3',resolution_plan_date:'2025-01-10',suit_forum:'DRT',suit_filed_date:'2025-03-05',wd_examined:'Y',asset_tracing_done:'Y',guarantors:'2',unit_status:'Closed',means_lakh:'150',legal_position:'OK',ots_status:'Offered',last_visit_date:'2026-05-02',status_report_date:'2026-07-04',ra_engaged_date:'2026-02-15'},
+ {account_no:'SMP-1003',borrower:'Ramesh Kumar',branch:'Rampur',office_type:'Branch',segment:'Agri',constitution:'Individual',rl_lakh:'6.5',contractual_dues_lakh:'9.8',npa_date:'2023-06-30',asset_class:'Doubtful-2',provision_pct:'100',security_type:'Agri land',security_fmv_lakh:'9',security_rv_lakh:'7',sarfaesi_eligible:'N',last_visit_date:'2026-01-10',status_report_date:'2026-04-05',ots_status:'None',wd_examined:'Y'},
+ {account_no:'SMP-1004',borrower:'Meera Sharma',branch:'Card Centre',office_type:'Branch',segment:'CreditCard',constitution:'Individual',rl_lakh:'2.8',contractual_dues_lakh:'3.9',npa_date:'2025-01-15',provision_pct:'100',security_type:'None',sarfaesi_eligible:'N',status_report_date:'2026-07-05',ots_status:'None'},
+ {account_no:'SMP-1005',borrower:'Horizon Infra Projects Ltd',branch:'SAMB Mumbai',office_type:'SAMB',segment:'Corporate',constitution:'Company',rl_lakh:'4200',contractual_dues_lakh:'6900',npa_date:'2022-03-31',asset_class:'Doubtful-3',provision_pct:'100',group_exposure_cr:'380',security_type:'Immovable',security_fmv_lakh:'2600',security_rv_lakh:'2100',valuation_date:'2023-11-10',sarfaesi_eligible:'Y',cersai_done:'Y',notice_13_2_date:'2022-04-06',possession_13_4_date:'2022-07-01',physical_possession:'N',suit_forum:'DRT',suit_filed_date:'2022-07-10',resolution_plan_date:'2022-05-02',fraud_status:'Wilful',wd_examined:'Y',staff_accountability:'N',nclt_status:'None',guarantors:'3',flight_risk:'Y',consortium:'Y',bank_share_pct:'18',pledged_shares:'Y',pledge_invoked:'N',unit_status:'Closed',legal_position:'OK',last_visit_date:'2026-03-15',status_report_date:'2026-07-06',ots_status:'None'},
+ {account_no:'SMP-1006',borrower:'Sai Transport',branch:'Station Road',office_type:'Branch',segment:'Vehicle',constitution:'Proprietorship',rl_lakh:'18',contractual_dues_lakh:'19.6',npa_date:'2026-06-05',asset_class:'Sub-standard',provision_pct:'15',security_type:'Vehicle',security_fmv_lakh:'14',security_rv_lakh:'11',valuation_date:'2026-06-20',sarfaesi_eligible:'Y',cersai_done:'Y',notice_13_2_date:'2026-06-20',status_report_date:'2026-06-11',ra_engaged_date:'2026-07-01',last_visit_date:'2026-06-25',ots_status:'None'}
+];
+$('#sampleBtn').onclick=()=>{let n=0;SAMPLE.forEach(s=>{const o={};KEYS.forEach(k=>o[k]=s[k]||'');if(!ACC.find(x=>x.account_no===o.account_no)){ACC.push(o);n++}});save();render();toast(n+' sample accounts loaded')};
+
+/* ---------- OTS ---------- */
+function toOTS(a){$('#o_rl').value=num(a.rl_lakh);$('#o_cdc').value=num(a.contractual_dues_lakh)||num(a.rl_lakh);
+ $('#o_npa').value=iso(pd(a.npa_date));$('#o_off').value=iso(T0);$('#o_rv').value=num(a.security_rv_lakh);$('#o_fmv').value=num(a.security_fmv_lakh);
+ $('#o_means').value=num(a.means_lakh);$('#o_legal').value=a.legal_position==='Defective'?'0':'1';
+ $('#o_fraud').value=['Fraud','Wilful'].includes(a.fraud_status)?'Y':'N';$('#o_office').value=a.office_type||'Branch';
+ $('#o_mkt').value=a.security_type==='Agri land'?'0':(num(a.auctions_failed)>4?'0':num(a.auctions_failed)>=1?'1':'2');
+ showTab('ots');calcOTS();window.scrollTo(0,0);toast('Filled from '+a.account_no+'. Check marketability and time factor.')}
+function band(r,pts){return r>1?pts[0]:r>.75?pts[1]:r>.5?pts[2]:r>.25?pts[3]:pts[4]}
+function calcOTS(){
+ const g=id=>$(id).value;const rl=num(g('#o_rl')),cdc=num(g('#o_cdc')),m=num(g('#o_mclr')),rv=num(g('#o_rv')),fmv=num(g('#o_fmv')),means=num(g('#o_means')),offer=num(g('#o_offer')),months=num(g('#o_months')),n=num(g('#o_n'));
+ const npa=pd(g('#o_npa')),off=pd(g('#o_off'));
+ if(!npa||!off||!rl){$('#otsOut').innerHTML='<div class="empty">Enter RL, date of NPA and offer date.</div>';return}
+ const qEnd=new Date(off.getFullYear(),Math.floor(off.getMonth()/3)*3,0);
+ const days=Math.max(0,dd(qEnd,npa));const yrs=days/365;
+ const CD=rl+rl*m/100*days/365;
+ const p1=rv>0?band(rv/CD,[5,4,2,1,0]):0; const p2=rv>0?num(g('#o_mkt')):0; const p3=band(means/CD,[4,3,2,1,0]);
+ const p4=num(g('#o_legal')); const p5=yrs<=2?3:yrs<4?2:0;
+ let score=p1+p2+p3+p4+p5,red=0; if(g('#o_tangle')==='Y')red=score>=13?3:score>=11?2:score===10?1:0; const fs=score-red;
+ const modular=fs>=15?rl+rl*(m+2)/100*days/365:fs>=12?CD:fs>=10?rl:fs>=8?.75*rl:fs>=6?.5*rl:fs>=4?.25*rl:.1*rl;
+ const R=m+3; const NPV=rv/Math.pow(1+R/100,n); const cap=cdc||Infinity;
+ const minS=Math.min(Math.max(modular,NPV),cap);
+ const eff=months>12?offer/Math.pow(1+R/100,months/12):offer;
+ const sac=Math.max(0,CD-eff); const relief=Math.max(0,(cdc||CD)-offer);
+ const case1=eff>=modular&&eff>=NPV&&months<=24;
+ const fraud=g('#o_fraud')==='Y',office=g('#o_office');
+ const sc=sac/100; const t1=[[2,'RLCC'],[6,'ZLCC'],[10,'CAC-III'],[15,'CAC-II'],[25,'CAC-I']],t2=[[1.5,'RLCC'],[2,'ZLCC'],[10,'CAC-III'],[15,'CAC-II'],[25,'CAC-I']];
+ let auth=(case1?t1:t2).find(x=>sc<=x[0]);auth=auth?auth[1]:'MCB';
+ if(office!=='Branch'&&auth==='RLCC')auth='ZLCC';
+ if(fraud)auth='MCB (fraud / wilful, irrespective of amount)';
+ const ok=offer>=minS;
+ const rows=[['Crystallised dues (RL + 1-yr MCLR simple interest to '+fd(qEnd)+', '+days+' days)',L(CD)],
+  ['Modular dues (final score '+fs+(red?' after reduction of '+red:'')+')',L(modular)],
+  ['NPV of securities at '+R.toFixed(2)+'% over '+n+' yrs',L(NPV)],
+  ['Minimum settlement (higher of the two'+(cdc?', capped at contractual dues':'')+')',L(minS)],
+  ['Offer'+(months>12?' (NPV of instalments: '+L(eff)+')':''),L(offer)],
+  ['Sacrifice (crystallised dues − offer) for delegation',L(sac)],
+  ['Total relief (contractual dues − offer) for write-off / waiver',L(relief)],
+  ['Upfront to collect (10% of offer)',L(offer*.1)]];
+ const terms=[];
+ if(months>24)terms.push('Payment period above 24 months is not allowed; the whole OTS must be paid within 2 years.');
+ else if(months>3)terms.push('More than 3 months: charge interest of at least 1-yr MCLR on the diminishing balance from sanction, and affix the restructuring label in Finacle.');
+ else terms.push('Within 3 months: no interest on the OTS amount.');
+ if(!ok)terms.push('Offer is below the minimum. Get written justification from the borrower and give cogent reasons in the proposal.');
+ if(fraud)terms.push('Inform the investigating agency in writing; implement only if no objection within 30 days. Staff accountability must be initiated first.');
+ terms.push('Delegation is the higher of this level and one level above the authority that could sanction the total RL of the borrower. Check the second test against the loan policy.');
+ $('#otsOut').innerHTML=`<div class="verdict ${ok?'ok':'bad'}"><b>${ok?'Offer meets the policy minimum':'Offer is below the policy minimum'}</b><br>${case1?'Case 1':'Case 2'} delegation: <b>${auth}</b></div>
+ <div class="card"><div class="tblwrap"><table class="tbl"><tr><th>Score card</th><th class="num">Points</th></tr>
+ <tr><td>Value of security (RV ${rv>0?(rv/CD*100).toFixed(1):0}% of crystallised dues)</td><td class="num">${p1}</td></tr>
+ <tr><td>Marketability</td><td class="num">${p2}</td></tr>
+ <tr><td>Means (${(means/CD*100).toFixed(1)}% of crystallised dues)</td><td class="num">${p3}</td></tr>
+ <tr><td>Legal position</td><td class="num">${p4}</td></tr>
+ <tr><td>Age of NPA (${yrs.toFixed(2)} years to end of previous quarter)</td><td class="num">${p5}</td></tr>
+ <tr class="hl"><td>Total${red?' (less '+red+' for legal tangles)':''}</td><td class="num">${fs}</td></tr></table></div></div>
+ <div class="card"><div class="tblwrap"><table class="tbl">${rows.map(r=>`<tr><td>${r[0]}</td><td class="num">${r[1]}</td></tr>`).join('')}</table></div>
+ <ul class="note">${terms.map(t=>`<li>${t}</li>`).join('')}</ul></div>`;
+}
+document.querySelectorAll('#ots input,#ots select').forEach(el=>el.addEventListener('input',calcOTS));
+
+/* ---------- delegation ---------- */
+const DEL=[
+ {k:'suit',n:'Permission to file suit / OA (DRT, e-DRT, civil court)',u:'Suit claim (₹ lakh)',rows:[[25,'Branch Head Scale I / II'],[100,'Branch Head Scale III'],[1000,'Branch Head Scale IV'],[2500,'Branch Head Scale V'],[5000,'Regional Head / Branch Head Scale VI'],[Infinity,'Zonal Head']],p:'Para 21.1. Standalone credit cards: Regional Head at any amount.'},
+ {k:'plaint',n:'Approval of draft plaint',u:'Suit amount (₹ lakh)',rows:[[100,'Assistant Manager (Law)'],[1000,'Manager (Law)'],[Infinity,'Senior Manager (Law) and above']],p:'Para 21.3. Appeals before NCLAT/HC/SC: Chief Manager (Law).'},
+ {k:'appeal',n:'Appeal before DRT / DRAT / tribunals / civil courts',u:'Claim (₹ lakh)',rows:[[5000,'Regional Head / ARB-SAMB Head (Scale V or VI)'],[Infinity,'Zonal Head']],p:'Para 21.1.4. Any appeal, SLP or WP in High Court / Supreme Court: Vertical Head, SAMV through CLO.'},
+ {k:'resplan',n:'Resolution plan decision after NPA',u:'RL outstanding (₹ lakh)',rows:[[500,'Regional Head'],[5000,'Zonal Head'],[Infinity,'SAMV, Central Office']],p:'Para 21.1. Within 90 days of NPA.'},
+ {k:'rp_arb',n:'Reserve price under SARFAESI (ARB / SAMB)',u:'Property value (₹ crore)',rows:[[5,'Branch Head Scale IV'],[10,'Branch Head Scale V'],[15,'Branch Head Scale VI'],[Infinity,'ZLCC']],p:'Para 21.2.3.'},
+ {k:'rp_br',n:'Reserve price under SARFAESI (other branches)',u:'Property value (₹ crore)',rows:[[10,'Branch Head Scale V'],[15,'Branch Head Scale VI'],[20,'RLCC (headed by Scale V)'],[25,'RLCC (headed by Scale VI)'],[Infinity,'ZLCC']],p:'Para 21.2.3. 1st and 2nd 10% cuts by the same authority; 3rd and 4th by the next level; after that ZLCC only.'},
+ {k:'pts',n:'Private treaty sale under SARFAESI',u:'Property value (₹ lakh)',rows:[[1000,'RLCC (headed by Scale V)'],[1500,'RLCC (headed by Scale VI)'],[Infinity,'ZLCC']],p:'Para 21.2.8.'},
+ {k:'ots1',n:'OTS, Case 1 (offer ≥ modular dues and NPV, ≤ 2 years)',u:'Sacrifice (₹ crore)',rows:[[2,'RLCC'],[6,'ZLCC'],[10,'CAC-III'],[15,'CAC-II'],[25,'CAC-I'],[Infinity,'MCB']],p:'Para 18. Fraud / wilful: MCB at any amount. ARB/SAMB: at least ZO committee.'},
+ {k:'ots2',n:'OTS, Case 2 (below modular dues or NPV, or > 2 years)',u:'Sacrifice (₹ crore)',rows:[[1.5,'RLCC'],[2,'ZLCC'],[10,'CAC-III'],[15,'CAC-II'],[25,'CAC-I'],[Infinity,'MCB']],p:'Para 18.'},
+ {k:'ros',n:'Release of security against payment',u:'Borrower total RL (₹ crore)',rows:[[15,'RLCC (headed by AGM)'],[25,'RLCC (headed by DGM)'],[50,'ZLCC (headed by GM)'],[75,'ZLCC (headed by CGM)'],[100,'CAC-III'],[250,'CAC-II'],[800,'CAC-I'],[Infinity,'MCB']],p:'Para 19. Consortium: our share only. Offer must be at least FMV.'},
+ {k:'hoo',n:'Holding on operations (agreed daily cut-back)',u:'Cut-back (%)',rev:true,rows:[[20,'RLCC (headed by Scale V / VI)'],[15,'ZLCC'],[10.0001,'CAC-III'],[5.0001,'CAC-II'],[1.0001,'CAC-I'],[-Infinity,'MCB']],p:'Para 27. Higher cut-back, lower authority.'},
+ {k:'tw',n:'Technical / prudential write-off',u:'RL of the account (₹ crore)',rows:[[50,'CAC-II'],[100,'CAC-I'],[Infinity,'MCB']],p:'Para 15.3. Fraud / wilful: MCB. Only when permitted by Central Office.'},
+ {k:'aw',n:'Absolute write-off (no settlement)',u:'Total dues (₹ lakh)',rows:[[25,'CAC-II at CO'],[100,'CAC-I at CO'],[Infinity,'MCB']],p:'Para 15.4.'},
+ {k:'wl',n:'Waiver / withdrawal of legal action or appeal',u:'Amount involved (₹ lakh)',rows:[[100,'ZLCC'],[200,'CAC-III'],[500,'CAC-II'],[1000,'CAC-I'],[Infinity,'MCB']],p:'Para 21.4.3. Reduced-claim appeals: Zonal Head.'}
+];
+$('#d_type').innerHTML=DEL.map(d=>`<option value="${d.k}">${d.n}</option>`).join('');
+function calcDel(){const d=DEL.find(x=>x.k===$('#d_type').value);$('#d_unit').textContent=d.u;const v=num($('#d_amt').value);
+ let idx;if(d.rev){idx=d.rows.findIndex(r=>v>=r[0])}else idx=d.rows.findIndex(r=>v<=r[0]);
+ const HL=['20% and above','15% up to below 20%','Above 10% to below 15%','Above 5% up to 10%','Above 1% up to 5%','1% and less'];
+ const lim=(r,i)=>{if(d.rev)return HL[i];
+  const prev=i?d.rows[i-1][0]:0;return r[0]===Infinity?'Above '+prev:(prev?'Above '+prev+' up to '+r[0]:'Up to '+r[0])};
+ $('#delOut').innerHTML=`<div class="verdict"><b>${d.rows[idx][1]}</b></div><div class="tblwrap"><table class="tbl"><tr><th>${d.u}</th><th>Authority</th></tr>
+ ${d.rows.map((r,i)=>`<tr class="${i===idx?'hl':''}"><td>${lim(r,i)}</td><td>${r[1]}</td></tr>`).join('')}</table></div><p class="note">${d.p}</p>`}
+$('#d_type').addEventListener('change',calcDel);$('#d_amt').addEventListener('input',calcDel);
+
+/* ---------- where it's done ---------- */
+const WHERE=[
+ {w:'web',h:'Finished entirely on the website',items:[
+  ['NPA register and quarterly status report','Status report fields, age, classification and pending steps come straight from the account data. Para 4.'],
+  ['OTS score card, crystallised dues, NPV, sacrifice, total relief','Pure calculation. Para 8–10.'],
+  ['Finding the approving authority','Every delegation ladder in the policy is a lookup. Paras 15–28.'],
+  ['Timeline tracking and alerts','SARFAESI 180-day clock, 90-day resolution plan, suit filing, RA tenure, valuation expiry, half-yearly reviews.'],
+  ['Reserve price working','FMV × value index, 10% cuts after each failed auction. Para 21.2.5.'],
+  ['Credit card settlement amount','Formula by age of NPA. Para 8.2.'],
+  ['Recovery agent fee working and MIS','Fee slabs and monthly recovery-through-agents report. Chapter III.']]},
+ {w:'prep',h:'Prepared on the website, completed outside it',items:[
+  ['OTS / release of security / condonation proposals','Drafted here with certificates; vetted by SAC and sanctioned by the committee, with signatures. Para 12, 17, 18.'],
+  ['Demand notice u/s 13(2), possession and sale notices','Drafted and dated here; must be signed by the Authorised Officer (Scale IV+), served and published physically. Para 21.2.'],
+  ['Permission notes for suit, appeal, NCLT, write-off, LOC','Note prepared here; the authority approves in file or committee.'],
+  ['Resolution plan within 90 days','Options laid out here; decided by RH / ZH / SAMV.'],
+  ['Staff accountability and wilful / fraud examination','Checklist here; committees at ZO / CO decide.'],
+  ['Half-yearly HOO and restructuring review notes','Figures pulled here; reviewed by the sanctioning authority.']]},
+ {w:'field',h:'Only in the field',items:[
+  ['Security verification visits','Branch officials must see the property, check dilution and meet obligants. Para 31.'],
+  ['Symbolic and physical possession, seizure of vehicles','Done on site by the Authorised Officer, with panchnama and publication. Para 21.2, 40.'],
+  ['Asset tracing and inspection for release of security','Investigation agency work and an independent officer\u2019s inspection. Para 7, 19.'],
+  ['Recovery camps and personal follow-up','Meetings with borrowers between 07:00 and 19:00. Para 34, Chapter IV.']]},
+ {w:'court',h:'Only in court, tribunal or with investigating agencies',items:[
+  ['Filing suit / OA, appeals, execution of decree','DRT, civil court, DRAT, High Court. Para 21.1.'],
+  ['Sec 14 application for physical possession','Before CMM / DM / CJM.'],
+  ['NCLT applications and CoC voting','IBC process. Para 23–25.'],
+  ['Consent decree for settlements in pending cases; criminal complaints','Para 8.1.5.8, 8.4.']]},
+ {w:'portal',h:'Only on other official portals',items:[
+  ['CERSAI registration','Before the 13(2) notice.'],
+  ['E-auction listing and bidding','Through the bank\u2019s e-auction service provider.'],
+  ['CGTMSE / NCGTC / ECGC claims','On the guarantor\u2019s portal.'],
+  ['NeSL filing for IBC, LOC request to MHA','External systems.']]},
+ {w:'cbs',h:'Only in CBS (Finacle)',items:[
+  ['Appropriation of recoveries, upfront, write-off and waiver entries','Order of appropriation per para 13.'],
+  ['Restructuring label for OTS beyond 3 months, PAN update before closure','Para 11, 8.1.5.9.'],
+  ['Transfer of accounts to ARB / SAMB','Para 32.']]}
+];
+$('#whereOut').innerHTML=WHERE.map(g=>`<div class="card"><h3 style="margin-top:0"><span class="where ${W[g.w][1]}">${W[g.w][0]}</span>${g.h}</h3><ul>${g.items.map(i=>`<li><b>${i[0]}</b><span>${i[1]}</span></li>`).join('')}</ul></div>`).join('');
+
+/* ---------- schema ---------- */
+$('#colTable').innerHTML='<tr><th>Column</th><th>Meaning</th><th>Values</th></tr>'+FIELDS.map(f=>`<tr><td><code>${f[0]}</code></td><td>${f[1]}</td><td>${f[2]==='select'?f[3].filter(Boolean).join(', '):f[2]==='date'?'date':f[2]==='number'?'number':'text'}${f[5]?'. '+f[5]:''}</td></tr>`).join('');
+$('#copyHdr').onclick=async()=>{try{await navigator.clipboard.writeText(KEYS.join(','));toast('Header row copied')}catch(e){$('#csvText').value=KEYS.join(',');$('#csvDlg').showModal();$('#csvText').select()}};
+const SCHEMA=[
+ ['borrowers','One row per customer (CIF)','cif_id PK, name, constitution, pan, msme_flag, group_id, flight_risk_flag, fraud_status, wilful_flag, contact_details'],
+ ['npa_accounts','One row per loan account','account_no PK, cif_id FK, branch_code FK, office_type, segment, sanction_authority, rl_lakh, contractual_dues_lakh, dummy_ledger_interest, npa_date, asset_class, provision_pct, consortium_flag, bank_share_pct, cgtmse_flag, resolution_route, resolution_plan_date, status'],
+ ['branches','Office hierarchy for routing approvals','branch_code PK, name, type (Branch/ARB/SAMB/RO/ZO), region_code, zone_code, head_scale'],
+ ['securities','Each mortgaged / hypothecated / pledged asset','security_id PK, account_no FK, owner (borrower/guarantor), type, description, sarfaesi_eligible, cersai_id, cersai_date, marketability, title_status'],
+ ['valuations','Each valuation report (expires in 2 years)','valuation_id PK, security_id FK, valuer_id, report_date, fmv, rv, distress_value, valid_till'],
+ ['guarantors','Guarantors and their guarantee terms','guarantor_id PK, account_no FK, name, pan, guarantee_scope (collateral only / full), means_lakh, pirp_status'],
+ ['sarfaesi_actions','One row per notice / step','action_id PK, account_no FK, security_id FK, step (13(2), service, 13(4), Sec 14, physical possession, sale notice, auction, private treaty), action_date, authorised_officer, reserve_price, result'],
+ ['legal_cases','Suits, OAs, appeals, NCLT, criminal cases','case_id PK, account_no FK, forum, case_no, filed_date, claim_lakh, advocate_id, next_hearing, decree_date, decree_amount, status'],
+ ['ots_proposals','Each settlement proposal','proposal_id PK, account_no FK, offer_date, offer_lakh, upfront_lakh, months, crystallised_dues, score, modular_dues, npv, sacrifice, total_relief, case_type, authority, sac_date, sanction_date, status, payments_due'],
+ ['ots_payments','Instalments against a sanctioned OTS','payment_id PK, proposal_id FK, due_date, amount_due, paid_date, amount_paid'],
+ ['agents','Recovery, enforcement, investigation and bid agents','agent_id PK, type, name, empanelled_till, police_verification_date'],
+ ['agent_assignments','Account-wise engagement (6-month tenure)','assignment_id PK, agent_id FK, account_no FK, engaged_date, expiry_date, fee_basis, recovered_lakh, fee_paid'],
+ ['field_visits','Security verification and borrower contact','visit_id PK, account_no FK, officer_id, visit_date, purpose, finding, dilution_flag, next_visit_date, gps, photo_ref'],
+ ['tasks','Steps generated by the rules engine','task_id PK, account_no FK, rule_code, title, policy_para, where (website/prep/field/court/portal/cbs), due_date, done_date, owner_id'],
+ ['approvals','Every decision and who took it','approval_id PK, account_no FK, decision_type, amount_basis, authority, meeting_date, decision, remarks'],
+ ['recovery_procedures','Each of the 10 para 5.1 methods started on an account','run_id PK, account_no FK, method (follow, seize, sarfaesi, suit, rr, arc, nclt, pg, ni138, pss25), start_date, status, notes'],
+ ['procedure_steps','Step-by-step record of a procedure','step_id PK, run_id FK, step_no, title, due_date, done_date, done_by, where_done'],
+ ['contact_log','Persuasion and follow-up contacts','contact_id PK, account_no FK, contact_date, mode, person_met, outcome, promise_amount, promise_date, promise_kept'],
+ ['cheque_returns','Cheque (s.138 NI Act) and ECS/NACH (s.25 PSS Act) returns','return_id PK, account_no FK, instrument, instrument_no, amount, return_date, reason, notice_date, notice_served_date, complaint_date, court_case_no'],
+ ['audit_log','Who changed what, for inspection','log_id PK, user_id, table_name, record_id, change, changed_at']
+];
+$('#fullSchema').innerHTML='<div class="card"><h3>Full schema for a multi-user version</h3><p class="note">PK = primary key, FK = link to another table. Accounts link to borrowers, branches, securities, cases, proposals, agents, visits, tasks and approvals.</p><div class="tblwrap"><table class="tbl"><tr><th>Table</th><th>Holds</th><th>Key fields</th></tr>'+SCHEMA.map(s=>`<tr><td><code>${s[0]}</code></td><td>${s[1]}</td><td>${s[2]}</td></tr>`).join('')+'</table></div></div>';
+
+/* ---------- recovery methods (para 5.1) ---------- */
+const isCo=a=>['Company','LLP'].includes(a.constitution);
+const METHODS=[
+ {k:'follow',n:'Persuasion and personal follow-up',para:'Para 5.1, Chapter IV',start:'today',
+  when:'Every NPA, from the first day. Courtesy, fair treatment and persuasion come before any coercive step, and no legal or recovery measure starts without written notice.',
+  elig:a=>({ok:true,why:'Applies to all NPA accounts.'}),
+  steps:[
+   {t:'Send reminder letter / SMS and call the borrower',off:0,w:'prep',who:'Branch',note:'Simple business language. Keep copies on record.'},
+   {t:'Visit the borrower at the place of their choice (else residence, then business)',off:7,w:'field',who:'Branch official',note:'Between 07:00 and 19:00. Show the authority letter. Avoid bereavement or calamity.'},
+   {t:'Record the difficulty expressed and the borrower\u2019s proposal',off:7,w:'web',who:'Branch',note:'Use the contact log below for every call and visit.'},
+   {t:'Meet the guarantors and inform them of the default',off:15,w:'field',who:'Branch official'},
+   {t:'Issue written notice before any legal or recovery measure',off:21,w:'prep',who:'Branch Head',note:'Consider genuine difficulty or dispute raised by the customer before acting.'},
+   {t:'Decide the option: regularise, OTS, holding on operations, restructuring or credit counselling',off:30,w:'prep',who:'As per delegation'},
+   {t:'Engage recovery agent / BC if follow-up fails',off:45,w:'prep',who:'Regional Head / Branch',note:'Case-specific letter. Tell the borrower the agency name and phone. Calls recorded. 6-month tenure. Not while a borrower complaint is pending.'},
+   {t:'Offer Lok Adalat or recovery camp for small accounts',off:60,w:'field',who:'Committee fixes settlement range',note:'Personal, credit card and housing loans below \u20b920 lakh.'},
+   {t:'Monthly follow-up visit until recovery or legal route',base:1,off:30,w:'field',who:'Branch official'}]},
+ {k:'seize',n:'Seizure and disposal of securities',para:'Para 5.1, 33, 40; Chapter III-C, IV',start:'today',
+  when:'Hypothecated vehicles, stock, plant and machinery, pledged shares and gold. Seizure is done only through legal means, after notice, and only if it is economically viable.',
+  elig:a=>{const m=['Vehicle','Movable (P&M/stock)','Gold','Pledged shares'].includes(a.security_type)||['Vehicle','GoldLoan'].includes(a.segment)||Y(a.pledged_shares);return {ok:m,why:m?'Movable security recorded.':'No movable security recorded in the account.'}},
+  steps:[
+   {t:'Check economic viability (value against dues and seizure cost)',off:0,w:'prep',who:'Branch Head',para:'Para 40.4'},
+   {t:'Give written notice with time to cure the default',off:0,w:'prep',who:'Branch / Authorised Officer',note:'Under SARFAESI (13(2), 60 days) or under the hypothecation deed / Contract Act. Get acknowledgement.'},
+   {t:'Get approval and engage enforcement / seizure agent with a case-specific letter',off:60,w:'prep',who:'Competent authority for external agents',note:'Vehicles: 5% of value, minimum \u20b95,000, maximum \u20b925,000. Towing and godown at actuals.'},
+   {t:'Seize / take possession with inventory; inform the local police',off:61,w:'field',who:'Authorised Officer with agent',note:'Pledged shares: invoke within a week of NPA (s.176 Contract Act).'},
+   {t:'Store safely in godown / under guard and insure',off:61,w:'field',who:'Branch'},
+   {t:'Get the seized asset valued',off:68,w:'prep',who:'Empanelled valuer'},
+   {t:'Send 7-day sale notice to the borrower',off:68,w:'prep',who:'Branch',note:'Borrower may take the asset back on paying dues before the sale.'},
+   {t:'Sell by auction / tender / quotations (listed shares through the exchange)',off:80,w:'portal',who:'Branch / Treasury, CO'},
+   {t:'Appropriate proceeds; refund any surplus or pursue the shortfall',off:90,w:'cbs',who:'Branch'}]},
+ {k:'sarfaesi',n:'Action under the SARFAESI Act, 2002',para:'Para 21.2',start:'npa',
+  when:'Secured accounts where the security is enforceable under SARFAESI (not agricultural land). Starts within 7 days of NPA; not starting needs Zonal Head permission.',
+  elig:a=>({ok:Y(a.sarfaesi_eligible),why:Y(a.sarfaesi_eligible)?'Security marked SARFAESI-applicable.':'Security not marked SARFAESI-applicable in the account.'}),
+  steps:[
+   {t:'Confirm CERSAI registration of security interest',off:7,w:'portal',who:'Authorised Officer',field:'cersai_done',val:'Y'},
+   {t:'Issue demand notice u/s 13(2)',off:7,w:'prep',who:'Authorised Officer (Scale IV+)',field:'notice_13_2_date'},
+   {t:'Complete service; if unserved, paper publication and affixation',off:15,w:'field',who:'Authorised Officer'},
+   {t:'Reply to borrower objections within 15 days of receipt',off:60,w:'prep',who:'Authorised Officer',note:'Section 13(3A).'},
+   {t:'Take symbolic possession u/s 13(4); publish and paste notice within 7 days',off:90,w:'field',who:'Authorised Officer',field:'possession_13_4_date'},
+   {t:'Value the secured assets and fix reserve price',off:90,w:'prep',who:'As per reserve price delegation'},
+   {t:'File Sec 14 application before CMM / DM / CJM',off:90,w:'court',who:'Authorised Officer',field:'sec14_filed_date'},
+   {t:'Issue sale notice with 30 clear days (Rule 6(2) / 8(6))',off:100,w:'prep',who:'Authorised Officer'},
+   {t:'Take physical possession under the magistrate\u2019s order',off:130,w:'field',who:'Authorised Officer with EA',field:'physical_possession',val:'Y'},
+   {t:'Publish sale notice and hold e-auction',off:165,w:'portal',who:'Authorised Officer'},
+   {t:'Receive balance sale price within 15 days and issue sale certificate',off:180,w:'cbs',who:'Authorised Officer'},
+   {t:'If the auction fails: re-auction with 10% cut, bid success agent, or private treaty',w:'prep',who:'As per delegation'}]},
+ {k:'suit',n:'Suit / OA in civil court or DRT, and execution of decree / RC',para:'Para 21.1, 21.3',start:'npa',
+  when:'Every NPA where resolution is through recovery. DRT for claims of \u20b920 lakh and above; civil court below that. Runs in parallel with SARFAESI.',
+  elig:a=>({ok:!(a.nclt_status==='Admitted'||a.nclt_status==='Liquidation'),why:(a.nclt_status==='Admitted'||a.nclt_status==='Liquidation')?'Borrower is under moratorium in NCLT; sue the guarantors instead.':'Forum: '+((num(a.contractual_dues_lakh)||num(a.rl_lakh))>=20?'DRT':'civil court / Lok Adalat')+'.'}),
+  steps:[
+   {t:'Get permission to file suit; keep papers and documents ready',off:90,w:'prep',who:'By suit amount (see Who approves)'},
+   {t:'Entrust the case to a panel advocate',off:90,w:'prep',who:'Regional Head / Branch Head Scale V-VI'},
+   {t:'Advocate drafts the plaint / OA',base:1,off:15,w:'prep',who:'Panel advocate'},
+   {t:'Law officer approves the draft',base:1,off:25,w:'prep',who:'Law officer by suit amount'},
+   {t:'File the OA / suit',base:1,off:35,w:'court',who:'Branch with advocate',field:'suit_filed_date'},
+   {t:'Seek interim orders: attachment before judgment, disclosure of assets, injunction',base:4,off:30,w:'court',who:'Advocate'},
+   {t:'Seek attachment of guarantors\u2019 other assets (s.19(12)\u2013(18) RDB Act)',base:4,off:30,w:'court',who:'Advocate'},
+   {t:'Obtain decree / recovery certificate',w:'court',who:'DRT / court',field:'decree_obtained',val:'Y'},
+   {t:'File execution before the Recovery Officer / executing court',base:7,off:30,w:'court',who:'Branch with advocate'},
+   {t:'Decide on appeal if the claim was reduced (DRAT limit 45 days)',base:7,off:30,w:'prep',who:'Zonal Head'},
+   {t:'Attach and sell assets of the judgment debtors; appropriate proceeds',w:'court',who:'Recovery Officer'}]},
+ {k:'rr',n:'Revenue Recovery through the appropriate authority',para:'Para 5.1, 36',start:'today',
+  when:'Loans covered by the State Revenue Recovery Act, typically agricultural and state-notified loans. Coverage, forms and charges differ by state, so confirm with the law officer.',
+  elig:a=>{const ok=a.segment==='Agri'||a.security_type==='Agri land';return {ok,why:ok?'Agricultural loan: check state RR Act coverage.':'Usually for agricultural / state-notified loans; check the state RR Act.'}},
+  steps:[
+   {t:'Confirm the loan is covered by the state Revenue Recovery Act',off:0,w:'prep',who:'Law officer'},
+   {t:'Send written demand notice to borrower and guarantors',off:0,w:'prep',who:'Branch'},
+   {t:'Prepare statement of dues and the requisition / RR certificate',off:15,w:'web',who:'Branch'},
+   {t:'Submit the requisition to the Collector / Tehsildar',off:30,w:'auth',who:'Branch Head'},
+   {t:'Follow up on demand, attachment and sale by the revenue officials',off:60,w:'field',who:'Branch / advocate'},
+   {t:'Receive recovery, appropriate it and pay collection charges if levied',w:'cbs',who:'Branch'},
+   {t:'Pay advocate / agent incentive up to 3% of recovery (small accounts)',w:'prep',who:'Field office',note:'Accounts under RR or civil cases up to \u20b910 lakh.'}]},
+ {k:'arc',n:'Sale of assets to ARCs / NBFCs / FIs / banks',para:'Chapter II',start:'today',
+  when:'When no cash recovery or OTS is likely in 6\u201312 months and carrying cost is high. For transferees other than ARCs, the account must be NPA for 2 years and fully provided. All-cash bids are preferred.',
+  elig:a=>{const r=analyse(a);const ok=num(a.provision_pct)>=100||r.ageY>=2;return {ok,why:ok?'Passes the first test (fully provided or NPA 2+ years). Record the comparative merit note.':'Not yet fully provided and NPA under 2 years.'}},
+  steps:[
+   {t:'Comparative merit note and in-principle approval',w:'prep',who:'SAMV, CO'},
+   {t:'Prepare the Preliminary Information Memorandum with latest valuation',w:'prep',who:'Branch / RO / ZO'},
+   {t:'Value the financial asset (stock and book debts per audit, P&M at distress or scrap value)',w:'prep',who:'Valuer / Branch'},
+   {t:'Fix reserve price with the ARC Sale Committee (NPV of securities, capped at total dues)',w:'prep',who:'ARC Sale Committee',note:'Valid till the end of the financial year or 2 years from valuation, whichever is earlier.'},
+   {t:'Prepare the Request for Bid and get committee approval',w:'prep',who:'ARC Sale Committee'},
+   {t:'Publish EoI in two national papers (Hindi and English); upload RFB on the bank portal',w:'portal',who:'SAMV'},
+   {t:'Share the PIM only after EoI and signed NDA',w:'web',who:'SAMV'},
+   {t:'Arrange due diligence for bidders',w:'field',who:'Branch / SAMV'},
+   {t:'Hold e-auction (Swiss challenge if a single bid; bilateral deals of \u20b9100 Cr+ exposure must go through Swiss challenge)',w:'portal',who:'SAMV',note:'No bid: two 10% cuts by the committee, then CAC-II without ceiling.'},
+   {t:'Declare H-1; SAC vetting; approval by sacrifice',w:'prep',who:'CAC-III up to \u20b910 Cr, CAC-II up to \u20b915 Cr, CAC-I up to \u20b925 Cr, MCB above; fraud/wilful: MCB'},
+   {t:'Receive the full consideration before executing the deed',w:'cbs',who:'Branch'},
+   {t:'Execute the IBA assignment deed (vetted by ZO legal) and close the account',w:'cbs',who:'Nominated officers'}]},
+ {k:'nclt',n:'Reference to NCLT for resolution / liquidation (IBC, 2016)',para:'Para 23\u201325, Chapter V',start:'today',
+  when:'Corporate debtors (companies and LLPs) with default of \u20b91 crore and above, where the unit is viable or asset-heavy, investors are likely, our CoC vote share is adequate and security enforcement has been tried. MSMEs can use pre-packaged insolvency (default \u20b910 lakh and above).',
+  elig:a=>{const ok=isCo(a)&&num(a.rl_lakh)>=100;return {ok,why:!isCo(a)?'Borrower is not a company or LLP.':ok?'Company / LLP with default \u20b91 crore or more.':'Default below \u20b91 crore'+(Y(a.msme)&&num(a.rl_lakh)>=10?'; pre-packaged route may fit.':'.')}},
+  steps:[
+   {t:'Test the indicative criteria (viability, investor interest, enforcement tried)',w:'prep',who:'RO / ZO'},
+   {t:'Check ROC records and balance sheet for our CoC vote share',w:'web',who:'ZO'},
+   {t:'Get the Record of Default from NeSL (Information Utility)',w:'portal',who:'Branch'},
+   {t:'ZLCC approval to refer the account',w:'prep',who:'ZLCC'},
+   {t:'Select IRP through EoI and quotes; ZLCC approves IRP and first-month fee',w:'prep',who:'ZLCC'},
+   {t:'Engage NCLT advocate and file the Sec 7 application',w:'court',who:'ZO / Branch'},
+   {t:'On admission, file claim in Form C with the IRP by email within the stipulated date',w:'prep',who:'Branch',note:'IRP invites claims within 3 days of CIRP starting.'},
+   {t:'Transfer the account to the SAM Branch',w:'cbs',who:'Zonal Head'},
+   {t:'File DRT suit against guarantors within 3 months of CIRP',base:6,off:90,w:'court',who:'Branch / SAMB'},
+   {t:'Vote in CoC per delegation; assent or dissent on the resolution plan',w:'prep',who:'ZLCC / CO committees as per OTS delegation'},
+   {t:'Watch the CIRP timeline (180 days, extendable up to 330 days)',base:6,off:180,w:'prep',who:'SAMB'},
+   {t:'Receive resolution or liquidation proceeds; appropriate to principal first',w:'cbs',who:'SAMB'}]},
+ {k:'pg',n:'Insolvency against personal / corporate guarantors of the corporate debtor',para:'Para 5.1, 37',start:'today',
+  when:'Once no revival is visible. Enforce the guarantor\u2019s security and assets, and move insolvency under IBC against guarantors of a corporate debtor as per the SOP for invoking guarantee. Confirm forms and limitation with the law department.',
+  elig:a=>{const ok=num(a.guarantors)>0;return {ok,why:ok?(isCo(a)?'Guarantors of a corporate debtor: IBC route available.':'Guarantors on record; IBC route applies only to guarantors of a company.'):'No guarantor recorded in the account.'}},
+  steps:[
+   {t:'Invoke the guarantee by written notice',w:'prep',who:'Branch'},
+   {t:'Enforce guarantor\u2019s secured assets under SARFAESI s.13',w:'field',who:'Authorised Officer'},
+   {t:'Sell shares pledged by guarantors (s.176 Contract Act)',w:'portal',who:'Branch / Treasury'},
+   {t:'Seek attachment and sale of guarantor\u2019s other assets in DRT (s.19(12)\u2013(18))',w:'court',who:'Advocate'},
+   {t:'Personal guarantor: serve demand notice and allow 14 days',w:'prep',who:'Branch / law officer'},
+   {t:'File application u/s 95 IBC before NCLT (personal insolvency)',base:4,off:15,w:'court',who:'ZO with advocate'},
+   {t:'Corporate guarantor: file Sec 7 application with ZLCC approval',w:'court',who:'ZLCC'},
+   {t:'File claim with the resolution professional; follow the repayment plan or bankruptcy',w:'court',who:'Branch'}]},
+ {k:'ni138',n:'Section 138, Negotiable Instruments Act (cheque dishonour)',para:'Para 5.1, 8.4.2.1',start:'today',trig:'Return memo received on',
+  when:'A cheque given towards repayment is returned for insufficient funds. The timelines are statutory and strict. OTS in these accounts is dealt with in the normal course of delegated powers.',
+  elig:a=>({ok:true,why:'Use when a repayment cheque has bounced for want of funds.'}),
+  steps:[
+   {t:'Confirm cheque was presented within validity (3 months) and returned for insufficient funds',off:0,w:'prep',who:'Branch'},
+   {t:'Send legal demand notice to the drawer',off:30,w:'prep',who:'Branch / advocate',note:'Within 30 days of receiving the return memo. Registered / speed post with proof.'},
+   {t:'Record the date the notice was served',w:'web',who:'Branch'},
+   {t:'Allow 15 days from service for payment',base:2,off:15,w:'web',who:'Branch'},
+   {t:'File complaint before the Judicial Magistrate (where the payee branch is)',base:2,off:45,w:'court',who:'Advocate',note:'Within one month after the 15-day period ends.'},
+   {t:'Attend trial; seek interim compensation u/s 143A (up to 20%)',w:'court',who:'Advocate'},
+   {t:'Record the outcome in the account',w:'prep',who:'Branch'}]},
+ {k:'pss25',n:'Section 25, Payment and Settlement Systems Act (ECS / NACH dishonour)',para:'Para 5.1',start:'today',trig:'Return intimation received on',
+  when:'An electronic debit mandate (ECS / NACH) given for repayment fails for insufficient funds. Same statutory timelines as cheque dishonour; the mandate must have been in line with the payment system\u2019s procedure.',
+  elig:a=>({ok:true,why:'Use when an ECS / NACH debit for repayment has failed for want of funds.'}),
+  steps:[
+   {t:'Confirm the mandate was valid and the debit failed for insufficient funds',off:0,w:'prep',who:'Branch'},
+   {t:'Send legal demand notice to the account holder',off:30,w:'prep',who:'Branch / advocate',note:'Within 30 days of the return intimation.'},
+   {t:'Record the date the notice was served',w:'web',who:'Branch'},
+   {t:'Allow 15 days from service for payment',base:2,off:15,w:'web',who:'Branch'},
+   {t:'File complaint before the Judicial Magistrate',base:2,off:45,w:'court',who:'Advocate',note:'Within one month after the 15-day period ends.'},
+   {t:'Attend trial and record the outcome',w:'court',who:'Advocate'}]}
+];
+function runOf(a,k){return a.proc&&a.proc[k]}
+function stepDate(a,m,run,i){const s=m.steps[i];if(run.done&&run.done[i])return pd(run.done[i]);
+ return s.field&&!s.val?pd(a[s.field]):null}
+function stepDone(a,m,run,i){const s=m.steps[i];if(run.done&&run.done[i])return true;if(s.field){const v=a[s.field];return s.val?Y(v):!!pd(v)}return false}
+function stepDue(a,m,run,i){const s=m.steps[i];if(s.off==null)return null;let b;
+ if(s.base==null)b=pd(run.start);else b=stepDate(a,m,run,s.base);return b?addD(b,s.off):null}
+function methodState(a,m){const run=runOf(a,m.k);const e=m.elig(a);
+ if(!run)return {label:e.ok?'Applicable':'Not applicable',cls:e.ok?'Open':'Check',e};
+ const n=m.steps.length,d=m.steps.filter((s,i)=>stepDone(a,m,run,i)).length;
+ const over=m.steps.some((s,i)=>!stepDone(a,m,run,i)&&stepDue(a,m,run,i)&&stepDue(a,m,run,i)<T0);
+ return {label:d===n?'Completed':`Running: ${d} of ${n}`,cls:d===n?'Done':over?'Overdue':'Due',e,run,d,n,over}}
+
+/* ---------- methods UI ---------- */
+let MSEL='',MOPEN=new Set();
+function renderMethods(){
+ const sel=$('#m_acc');const cur=MSEL;
+ sel.innerHTML='<option value="">Choose an account</option>'+ACC.map(a=>`<option value="${esc(a.account_no)}" ${a.account_no===cur?'selected':''}>${esc(a.account_no)} \u2013 ${esc(a.borrower)}</option>`).join('');
+ // board
+ const rows=METHODS.map((m,i)=>{let run=0,over=0,app=0;ACC.forEach(a=>{const st=methodState(a,m);if(st.run){run++;if(st.over)over++}else if(st.e.ok)app++});
+  return `<tr><td>${i+1}. ${m.n}</td><td class="num">${run}</td><td class="num" style="color:var(--red)">${over||''}</td><td class="num">${app}</td></tr>`}).join('');
+ $('#m_board').innerHTML=`<div class="tblwrap"><table class="tbl"><tr><th>Procedure</th><th class="num">Running</th><th class="num">Overdue</th><th class="num">Applicable, not started</th></tr>${rows}</table></div>`;
+ const a=ACC.find(x=>x.account_no===cur);
+ if(!a){$('#m_list').innerHTML=`<div class="empty">${ACC.length?'Choose an account to see which procedures apply and to track them step by step.':'Add or load accounts in the Accounts tab first.'}</div>`;return}
+ const r=analyse(a);
+ $('#m_list').innerHTML=`<p class="note">${esc(a.borrower)}, RL ${L(a.rl_lakh)}, NPA ${fd(pd(a.npa_date))} (${r.ageY.toFixed(1)} years), ${esc(a.segment||'')}, ${esc(a.constitution||'')}</p>`+METHODS.map((m,i)=>{
+  const st=methodState(a,m),open=MOPEN.has(m.k);const run=st.run;
+  let body=`<p>${m.when}</p><p class="note"><b>For this account:</b> ${esc(st.e.why)} <span class="para">${m.para}</span></p>`;
+  if(!run){const def=m.start==='npa'?iso(pd(a.npa_date)):iso(T0);
+   body+=`<div class="bar"><label class="f">${m.trig||'Start date'}<input type="date" data-k="${m.k}" class="m_start" value="${def}"></label><button class="btn primary small" data-mact="start" data-k="${m.k}">Start tracking</button></div>`}
+  else{
+   body+=`<div class="bar"><label class="f">${m.trig||'Started on'}<input type="date" class="m_restart" data-k="${m.k}" value="${iso(pd(run.start))}"></label></div><ul class="tasks">`+m.steps.map((s,j)=>{
+    const done=stepDone(a,m,run,j),due=stepDue(a,m,run,j),dt=stepDate(a,m,run,j);
+    const stt=done?'Done':!due?(s.base!=null&&!stepDate(a,m,run,s.base)?'Check':'Check'):dd(due,T0)<0?'Overdue':dd(due,T0)<=15?'Due':'Open';
+    const wait=s.base!=null&&s.off!=null&&!stepDate(a,m,run,s.base)?`After step ${s.base+1}`:'';
+    return `<li><span class="st ${stt}">${stLabel[stt]}</span><span class="tt">${j+1}. ${esc(s.t)}</span>
+    ${s.note?`<span class="nt">${esc(s.note)}</span>`:''}
+    <span class="ft"><span class="where ${W[s.w][1]}">${W[s.w][0]}</span><span>${esc(s.who||'')}</span>${due?`<span>Due ${fd(due)}</span>`:wait?`<span>${wait}</span>`:''}${done&&dt?`<span>Done ${fd(dt)}</span>`:''}</span>
+    <span class="ft">${done?`<button class="btn small" data-mact="undo" data-k="${m.k}" data-j="${j}">Undo</button>`:`<input type="date" class="m_d" id="md_${m.k}_${j}" value="${iso(T0)}" aria-label="Date done"><button class="btn small" data-mact="done" data-k="${m.k}" data-j="${j}">Mark done</button>`}</span></li>`}).join('')+`</ul>
+   <label class="f" style="margin-top:10px">Notes<textarea class="m_note" data-k="${m.k}" rows="2" style="border:1px solid var(--line);border-radius:6px;background:var(--paper);padding:8px">${esc(run.note||'')}</textarea></label>
+   <div class="bar"><button class="btn small danger" data-mact="stop" data-k="${m.k}">Stop tracking</button></div>`}
+  if(m.k==='follow'){const log=a.log||[];
+   body+=`<h3>Contact log</h3><div class="grid2"><label class="f">Date<input type="date" id="lg_d" value="${iso(T0)}"></label>
+   <label class="f">Mode<select id="lg_m"><option>Visit</option><option>Call</option><option>Letter</option><option>SMS / email</option><option>Borrower came to branch</option></select></label>
+   <label class="f">Person met<input id="lg_p" placeholder="Borrower / guarantor"></label>
+   <label class="f">Promise to pay (\u20b9 lakh)<input id="lg_a" type="number" step="0.01"></label>
+   <label class="f">Promised by<input id="lg_pd" type="date"></label>
+   <label class="f">Outcome<input id="lg_o" placeholder="What was said or agreed"></label></div>
+   <div class="bar"><button class="btn small primary" data-mact="log" data-k="follow">Add to log</button></div>
+   ${log.length?`<div class="tblwrap"><table class="tbl"><tr><th>Date</th><th>Mode</th><th>Met</th><th>Outcome</th><th>Promise</th><th></th></tr>${log.slice().reverse().map((l,ri)=>{const idx=log.length-1-ri;const bro=l.pd&&!l.kept&&pd(l.pd)<T0;
+    return `<tr><td>${fd(pd(l.d))}</td><td>${esc(l.m)}</td><td>${esc(l.p)}</td><td>${esc(l.o)}</td><td>${l.a?L(l.a)+' by '+fd(pd(l.pd)):''}${bro?' <b style="color:var(--red)">not kept</b>':''}${l.kept?' <b style="color:var(--green)">kept</b>':''}</td><td>${l.pd&&!l.kept?`<button class="btn small" data-mact="logkept" data-k="follow" data-j="${idx}">Paid</button> `:''}<button class="btn small" data-mact="logdel" data-k="follow" data-j="${idx}">Remove</button></td></tr>`}).join('')}</table></div>`:'<p class="note">No contacts logged yet.</p>'}`}
+  return `<article class="acc ${st.cls==='Overdue'?'hasover':st.run?'hassoon':st.e.ok?'':'clean'} ${open?'open':''}" data-mk="${m.k}">
+   <button class="head" data-mact="toggle" data-k="${m.k}" aria-expanded="${open}"><div><div class="nm">${i+1}. ${m.n}</div></div><div class="counts"><span class="st ${st.cls}">${st.label}</span></div></button>
+   <div class="detail">${body}</div></article>`}).join('');
+}
+$('#m_acc').addEventListener('change',e=>{MSEL=e.target.value;MOPEN.clear();renderMethods()});
+$('#m_list').addEventListener('click',e=>{const b=e.target.closest('[data-mact]');if(!b)return;const k=b.dataset.k,act=b.dataset.mact;
+ const a=ACC.find(x=>x.account_no===MSEL);if(!a)return;const m=METHODS.find(x=>x.k===k);a.proc=a.proc||{};
+ if(act==='toggle'){MOPEN.has(k)?MOPEN.delete(k):MOPEN.add(k);renderMethods();return}
+ if(act==='start'){const v=document.querySelector(`.m_start[data-k="${k}"]`).value||iso(T0);a.proc[k]={start:v,done:{},note:''};toast('Tracking started: '+m.n)}
+ if(act==='stop'){if(!confirm('Stop tracking this procedure? Recorded step dates are removed.'))return;delete a.proc[k];toast('Tracking stopped')}
+ if(act==='done'){const j=+b.dataset.j;const v=$('#md_'+k+'_'+j).value||iso(T0);const s=m.steps[j];a.proc[k].done[j]=v;if(s.field)a[s.field]=s.val||v;toast('Step '+(j+1)+' marked done')}
+ if(act==='undo'){const j=+b.dataset.j;const s=m.steps[j];delete a.proc[k].done[j];if(s.field)a[s.field]='';toast('Step '+(j+1)+' reopened')}
+ if(act==='log'){const g=id=>$(id).value.trim();if(!g('#lg_o')&&!g('#lg_p')){toast('Enter who was met or the outcome');return}
+  a.log=a.log||[];a.log.push({d:g('#lg_d'),m:g('#lg_m'),p:g('#lg_p'),a:g('#lg_a'),pd:g('#lg_pd'),o:g('#lg_o')});a.last_visit_date=g('#lg_m')==='Visit'&&(!pd(a.last_visit_date)||pd(g('#lg_d'))>pd(a.last_visit_date))?g('#lg_d'):a.last_visit_date;toast('Contact logged')}
+ if(act==='logkept'){a.log[+b.dataset.j].kept=true;toast('Promise marked as kept')}
+ if(act==='logdel'){a.log.splice(+b.dataset.j,1);toast('Entry removed')}
+ save();renderMethods();render()});
+$('#m_list').addEventListener('change',e=>{const a=ACC.find(x=>x.account_no===MSEL);if(!a)return;
+ if(e.target.classList.contains('m_note')){a.proc[e.target.dataset.k].note=e.target.value;save()}
+ if(e.target.classList.contains('m_restart')&&e.target.value){a.proc[e.target.dataset.k].start=e.target.value;save();renderMethods();render()}});
+function toMethods(a){MSEL=a.account_no;MOPEN.clear();showTab('meth');renderMethods();window.scrollTo(0,0)}
+
+/* ---------- status report (form as uploaded) ---------- */
+const SRT={
+ dirs:{cols:[{h:'Account no.'},{h:'Name of person'},{h:'Designation',o:['','Director','Partner','Guarantor','Guarantor Director']},{h:'DIN'},{h:'PAN'}],rows:2},
+ conn:{cols:[{h:'Name of company'},{h:'Date of last ABS',t:'date'},{h:'Total sales',n:1},{h:'Profit / loss',n:1}],rows:2},
+ fac:{cols:[{h:'Borrower / firm'},{h:'Type of facility',o:['Fund based','Non-fund based']},{h:'Limits sanctioned',n:1},{h:'Running ledger',n:1},{h:'Dummy interest',n:1},{h:'Legal charges',n:1},{h:'Total dues',n:1,calc:r=>num(r[3])+num(r[4])+num(r[5])},{h:'Provision held',n:1},{h:'Provision %',n:1,pct:1,calc:r=>{const t=num(r[3])+num(r[4])+num(r[5]);return t?num(r[7])/t*100:0}}],rows:2,facTot:1},
+ fin:{cols:[{h:'Particulars',fixed:1},{h:'y1',n:1},{h:'y2',n:1},{h:'y3',n:1}],fixed:[['Paid up capital'],['Tangible net worth (TNW)'],['Gross sales / income'],['Operating profit (EBITDA)'],['Profit after tax (PAT)']]},
+ cic:{cols:[{h:'Report',fixed:1},{h:'',fixed:1},{h:'Name of borrower / guarantor / firm'},{h:'Date of report',t:'date',old:1},{h:'Score (if applicable)'},{h:'Remarks'}],fixed:[['CIBIL','B/G/F 1'],['CIBIL','B/G/F 2'],['CRILC','B/G/F 1'],['CRILC','B/G/F 2'],['Corpository','Firm 1'],['Corpository','Firm 2']]},
+ auc:{cols:[{h:'Property description (as per para 11)'},{h:'FMV',n:1},{h:'Date of e-auction',t:'date'},{h:'Reserve price',n:1},{h:'Outcome'}],rows:1},
+ conacc:{cols:[{h:'Name'},{h:'Branch'},{h:'Sanctioned limits',n:1},{h:'Running ledger',n:1},{h:'Classification'},{h:'Security value',n:1}],rows:1,tot:[2,3,5]},
+ othbank:{cols:[{h:'Bank / FI'},{h:'Sanctioned limits',n:1},{h:'% share',n:1},{h:'Running ledger',n:1},{h:'Classification'},{h:'Security value',n:1}],rows:1,tot:[1,3,5]},
+ secp:{cols:[{h:'Description of security'},{h:'Value at initial sanction',n:1},{h:'Value at latest renewal',n:1},{h:'Valuer & date of report'},{h:'Value as per report',n:1},{h:'Value accepted by branch',n:1},{h:'Marketability',o:['Easily marketable','Not easily marketable','Difficult to market']}],rows:1,tot:[1,2,4,5]},
+ secc:{cols:[{h:'Description of security'},{h:'Value at initial sanction',n:1},{h:'Value at latest renewal',n:1},{h:'Valuer & date of report'},{h:'Value as per report',n:1},{h:'Value accepted by branch',n:1},{h:'Marketability',o:['Easily marketable','Not easily marketable','Difficult to market']}],rows:1,tot:[1,2,4,5]},
+ sold:{cols:[{h:'Brief of security'},{h:'Last valuation',n:1},{h:'Reserve price',n:1},{h:'Sale price',n:1},{h:'Appropriated amount',n:1}],rows:1,tot:[1,2,3,4]},
+ means:{cols:[{h:'Category',o:['Borrower','Personal guarantor','Corporate guarantor']},{h:'Name'},{h:'At initial sanction',n:1},{h:'At latest renewal',n:1},{h:'Present position*',n:1}],rows:2,tot:[2,3,4]},
+ ots:{cols:[{h:'Date of offer',t:'date'},{h:'Offer amount',n:1},{h:'Response from bank'}],rows:1},
+ trace:{cols:[{h:'Entrusted agency'},{h:'Date of report',t:'date'},{h:'Outcome'}],rows:1}
+};
+let SRK='';
+function srQEnd(){return new Date(T0.getFullYear(),Math.floor(T0.getMonth()/3)*3,0)}
+function srGet(){if(SRK==='__blank'){try{return JSON.parse(localStorage.getItem('rd_sr_blank')||'null')||{f:{},t:{}}}catch(e){return {f:{},t:{}}}}
+ const a=ACC.find(x=>x.account_no===SRK);if(!a)return null;a.sr=a.sr||{f:{},t:{}};return a.sr}
+let SRD=null,srTimer=null;
+function srSave(){clearTimeout(srTimer);srTimer=setTimeout(()=>{if(SRK==='__blank'){try{localStorage.setItem('rd_sr_blank',JSON.stringify(SRD))}catch(e){}}else save();$('#sr_saved').textContent='Saved '+new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})},400)}
+const C2=v=>num(v).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
+function F(k,l,t,o){const v=esc(SRD.f[k]??'');
+ if(t==='area')return `<label class="f srw">${l}<textarea data-f="${k}" rows="3">${v}</textarea></label>`;
+ if(t==='sel')return `<label class="f">${l}<select data-f="${k}">${o.map(x=>`<option ${SRD.f[k]===x?'selected':''}>${x}</option>`).join('')}</select></label>`;
+ return `<label class="f">${l}<input type="${t||'text'}" ${t==='number'?'step="any"':''} data-f="${k}" value="${v}"></label>`}
+function srRows(k){const d=SRT[k];if(d.fixed){SRD.t[k]=SRD.t[k]||d.fixed.map(r=>r.concat(Array(d.cols.length-r.length).fill('')));return SRD.t[k]}
+ if(!SRD.t[k])SRD.t[k]=Array.from({length:d.rows},()=>Array(d.cols.length).fill(''));return SRD.t[k]}
+function TB(k,cap){const d=SRT[k],rows=srRows(k);
+ const hd=d.cols.map((c,i)=>{let h=c.h;if(k==='fin'&&i>0)h=`Mar <input class="yr" data-f="fin_y${i}" value="${esc(SRD.f['fin_y'+i]||'')}" size="4" aria-label="Year"> (Aud.)`;return `<th class="${c.n?'num':''}">${h}</th>`}).join('')+(d.fixed?'':'<th class="noprint"></th>');
+ const body=rows.map((r,ri)=>'<tr>'+d.cols.map((c,ci)=>{
+  if(c.fixed)return `<td><b>${esc(r[ci])}</b></td>`;
+  if(c.calc)return `<td class="num"><output data-calc="${k}:${ri}:${ci}"></output></td>`;
+  const v=esc(r[ci]??'');const at=`data-t="${k}" data-r="${ri}" data-c="${ci}"`;
+  if(c.o)return `<td><select ${at}>${c.o.map(x=>`<option ${r[ci]===x?'selected':''}>${x}</option>`).join('')}</select></td>`;
+  return `<td><input ${at} type="${c.t==='date'?'date':c.n?'number':'text'}" ${c.n?'step="any" class="n"':''} value="${c.t==='date'?iso(pd(r[ci])):v}"></td>`}).join('')+
+  (d.fixed?'':`<td class="noprint"><button class="btn small" data-srdel="${k}" data-r="${ri}" aria-label="Remove row">✕</button></td>`)+'</tr>').join('');
+ let foot='';
+ if(d.tot)foot=`<tr class="tot"><td><b>Total</b></td>${d.cols.slice(1).map((c,i)=>`<td class="num">${d.tot.includes(i+1)?`<output data-tot="${k}:${i+1}"></output>`:''}</td>`).join('')}${d.fixed?'':'<td class="noprint"></td>'}</tr>`;
+ if(d.facTot)foot=['Fund based','Non-fund based','Grand total'].map(g=>`<tr class="tot"><td colspan="2"><b>${g}</b></td>${[2,3,4,5,6,7,8].map(ci=>`<td class="num"><output data-ftot="${g}:${ci}"></output></td>`).join('')}<td class="noprint"></td></tr>`).join('');
+ return `${cap?`<p class="note">${cap}</p>`:''}<div class="tblwrap"><table class="tbl srt"><tr>${hd}</tr>${body}${foot}</table></div>${d.fixed?'':`<div class="bar noprint"><button class="btn small" data-sradd="${k}">Add row</button></div>`}`}
+function S(no,title,inner,unit){return `<div class="card srs"><h3>${no}. ${title}${unit?` <span class="note">(${unit})</span>`:''}</h3>${inner}</div>`}
+function renderSR(){
+ const sel=$('#sr_acc');sel.innerHTML='<option value="">Choose an account</option><option value="__blank" '+(SRK==='__blank'?'selected':'')+'>Blank report (not linked to an account)</option>'+ACC.map(a=>`<option value="${esc(a.account_no)}" ${a.account_no===SRK?'selected':''}>${esc(a.account_no)} – ${esc(a.borrower)}</option>`).join('');
+ SRD=SRK?srGet():null;
+ if(!SRD){$('#sr_form').innerHTML='<div class="empty">Choose an account to prepare its status report, or start a blank report. Details already in the account are filled in for you.</div>';$('#sr_tools').style.display='none';return}
+ $('#sr_tools').style.display='';
+ if(!SRD.f.as_on)SRD.f.as_on=iso(srQEnd());
+ const asOn=fd(pd(SRD.f.as_on)).replace(/-/g,'.');
+ const html=`<div class="card srs srhead"><h2 style="text-align:center;margin:0 0 10px">STATUS REPORT AS ON <span id="sr_ason_t">${asOn}</span></h2>
+  <div class="grid2">${F('as_on','Status report as on','date')}${F('ref','Ref. No.')}${F('rdate','Date','date')}</div></div>
+ ${S(1,'Borrower profile',`<div class="grid2">${F('name','1.1 Name')}${F('cif','CIF ID')}${F('acno','Account no.')}
+  ${F('contact','1.2 Borrower / guarantor contact details','area')}${F('keyp','1.3 Name and contact number of key persons','area')}
+  ${F('br_present','1.4 Present branch')}${F('br_base','Base branch')}${F('region','1.5 Region')}${F('zone','Zone')}${F('group','1.6 Group')}
+  ${F('addr_reg','1.7 Registered / administrative office','area')}${F('addr_unit','Unit / work address','area')}</div>
+  <h4>1.8 Details of directors / partners / guarantors</h4>${TB('dirs')}`)}
+ ${S(2,'Details of connected companies (as per DIN no.)',`<div class="grid2">${F('conn_ason','As on','date')}</div>${TB('conn')}`,'₹ crore')}
+ ${S(3,'Details of credit facilities',`<div class="grid2">${F('fac_ason','As on','date')}${F('constitution','Constitution')}${F('doi','Date of incorporation','date')}${F('bank_since','Banking since','date')}
+  ${F('orig_sanc','Date of original sanction','date')}${F('last_review','Date of last review','date')}${F('npa_date','NPA date','date')}${F('asset_class','Asset classification')}
+  ${F('nature','Nature of business')}${F('present_pos','Present position of business')}${F('arrangement','Banking arrangement','sel',['Sole banking','Consortium','Multiple banking'])}
+  ${F('lead_bank','Name of lead bank and its share')}${F('our_share','Our bank\u2019s share (%)','number')}</div>${TB('fac')}`,'₹ crore')}
+ ${S(4,'Latest financials',TB('fin'),'₹ crore')}
+ ${S(5,'CIC / Corpository reports',TB('cic','All reports should be within one year for all borrowers, guarantors and firms. Older dates are marked.'))}
+ ${S(6,'Guarantee claim details (CGTMSE / ECGC / CGFSEL / NCGTC etc.)',`<div class="grid2">${F('gc_scheme','Scheme','sel',['None','CGTMSE','ECGC','CGFSEL','CGFMU','NCGTC','Other'])}${F('gc_cover','Amount covered','number')}
+  ${F('gc_lodged','Claim lodged on','date')}${F('gc_amt','Claim amount','number')}${F('gc_recd','Claim received','number')}${F('gc_recd_dt','Received on','date')}</div>
+  ${F('gc_reason','If claim not received / rejected, reasons','area')}`,'₹ crore')}
+ ${S(7,'Latest status of recovery action and compliance',`<h4>7.1 SARFAESI action</h4><div class="grid2">${F('s132','Date of issuance of 13(2)','date')}${F('s134','Symbolic possession 13(4)','date')}${F('s14','Date of filing of Sec 14','date')}${F('sphy','Date of physical possession','date')}</div>
+  ${F('sstay','If stay is there, reason for the same','area')}
+  <h4>7.2 Auction details</h4>${TB('auc')}
+  <h4>7.3 DRT suit</h4><div class="grid2">${F('drt_file','Date of filing','date')}${F('drt_case','Case no.')}${F('drt_status','Present status')}${F('drt_next','Date of next hearing','date')}${F('drt_purpose','Purpose of next hearing')}${F('drt_decree','Decreed amount (₹ crore)','number')}</div>${F('drt_other','Any other aspect','area')}
+  <div class="grid2">${F('nclt','7.4 NCLT status','area')}${F('pirp','7.5 Personal insolvency','area')}${F('rec_after','7.6 Recovery after NPA along with source of recovery','area')}${F('approp','7.7 Appropriation of amount recovered','area')}
+  ${F('staff_acc','7.8 Staff accountability','area')}${F('wilful','7.9 Wilful defaulter','area')}${F('fraud','7.10 Fraud','area')}${F('fraud_cplt','7.11 If fraud, date of complaint with CBI / police and latest status','area')}${F('audit_obs','7.12 Adverse audit observation, if any','area')}</div>`)}
+ ${S(8,'Brief background',F('background','','area'))}
+ ${S(9,'Details of connected accounts',`<div class="grid2">${F('conacc_ason','As on','date')}</div>${TB('conacc')}`,'₹ crore')}
+ ${S(10,'Details of accounts with other banks',`<div class="grid2">${F('oth_ason','As on','date')}</div>${TB('othbank')}`,'₹ crore')}
+ ${S(11,'Details of available securities (exclude sold properties)',`<h4>Primary security</h4>${TB('secp')}<h4>Collateral security</h4>${TB('secc')}`,'₹ crore')}
+ ${S(12,'NPV of securities for 2 years',`<div class="grid2">${F('mclr','1-year MCLR (%)','number')}</div><div id="sr12"></div>`,'₹ crore')}
+ ${S(13,'Reasons for decrease in valuation',F('val_decr','','area'))}
+ ${S(14,'Comments on marketability of security',F('mkt_comm','','area'))}
+ ${S(15,'Details of securities sold / liquidated',TB('sold')+`<div class="grid2">${F('sold_share','Our share (%)','number')}</div>`,'₹ crore')}
+ ${S(16,'Means of borrower / guarantors',TB('means','* Present position excludes value of mortgaged securities.')+`<div class="grid2">${F('means_share','Our share (%)','number')}</div>`,'₹ crore')}
+ ${S(17,'Reasons for decrease in means',F('means_decr','','area'))}
+ ${S(18,'Crystallised dues (CD)','<div id="sr18"></div>','₹ crore')}
+ ${S(19,'Evaluation module',`<div class="grid2">${F('legal','Legal position of the bank','sel',['No defects / deficiencies in documents & mortgage is in order','Documents are defective & mortgage not enforceable'])}</div><div id="sr19"></div>`)}
+ ${S(20,'Details of OTS offers received',TB('ots'),'₹ crore')}
+ ${S(21,'Asset tracing',TB('trace'))}
+ ${S(22,'Latest development and future action plan',F('action_plan','','area'))}
+ ${S(23,'File handling officer',`<div class="grid2">${F('fho_name','Name')}${F('fho_desig','Designation')}${F('fho_mob','Mobile no.','tel')}</div>`)}`;
+ $('#sr_form').innerHTML=html;
+ document.querySelectorAll('#sr_form textarea').forEach(srGrow);
+ srCalc();
+}
+function srGrow(t){t.style.height='auto';t.style.height=(t.scrollHeight+2)+'px'}
+function colSum(k,ci){return (SRD.t[k]||[]).reduce((s,r)=>s+num(r[ci]),0)}
+function srCalc(){
+ const set=(sel,v)=>{const e=document.querySelector(sel);if(e)e.textContent=v};
+ // row calcs
+ document.querySelectorAll('#sr_form output[data-calc]').forEach(o=>{const [k,ri,ci]=o.dataset.calc.split(':');const c=SRT[k].cols[ci];const v=c.calc(SRD.t[k][ri]||[]);o.textContent=c.pct?v.toFixed(2)+'%':C2(v)});
+ document.querySelectorAll('#sr_form output[data-tot]').forEach(o=>{const [k,ci]=o.dataset.tot.split(':');o.textContent=C2(colSum(k,+ci))});
+ // facilities totals
+ const fac=SRD.t.fac||[];const fsum=(g,ci)=>fac.filter(r=>g==='Grand total'||(r[1]||'Fund based')===g).reduce((s,r)=>s+(ci===6?num(r[3])+num(r[4])+num(r[5]):num(r[ci])),0);
+ document.querySelectorAll('#sr_form output[data-ftot]').forEach(o=>{const [g,ci]=o.dataset.ftot.split(':');const c=+ci;
+  if(c===8){const t=fsum(g,6);o.textContent=t?(fsum(g,7)/t*100).toFixed(2)+'%':'';}else o.textContent=C2(fsum(g,c))});
+ // CIC age
+ document.querySelectorAll('#sr_form input[data-t="cic"][data-c="3"]').forEach(i=>{const d=pd(i.value);i.style.color=d&&dd(T0,d)>365?'var(--red)':''});
+ // 18 CD
+ const asOn=pd(SRD.f.as_on)||srQEnd();const npa=pd(SRD.f.npa_date);const m=num(SRD.f.mclr);
+ const rl=fsum('Fund based',3)+fsum('Non-fund based',3);
+ const days=npa?Math.max(0,dd(asOn,npa)):0;const intr=rl*m/100*days/365;const CD=rl+intr;
+ $('#sr18').innerHTML=`<div class="tblwrap"><table class="tbl"><tr><td>Running ledger (from section 3)</td><td class="num">${C2(rl)}</td></tr>
+  <tr><td>Add: interest @ 1Y MCLR ${m?m+'%':'<i>(enter MCLR in section 12)</i>'} from NPA date ${fd(npa)} till end of last quarter ${fd(asOn)} (${days} days)</td><td class="num">${C2(intr)}</td></tr>
+  <tr class="hl"><td>Crystallised dues (CD)</td><td class="num">${C2(CD)}</td></tr></table></div>`;
+ // 12 NPV
+ const secs=[...(SRD.t.secp||[]),...(SRD.t.secc||[])];const secTot=secs.reduce((s,r)=>s+num(r[5]),0);
+ const share=SRD.f.our_share===''||SRD.f.our_share==null?100:num(SRD.f.our_share);const secOur=secTot*share/100;
+ const R=m+3;const npv=secOur/Math.pow(1+R/100,2);
+ $('#sr12').innerHTML=`<div class="tblwrap"><table class="tbl"><tr><td>Value accepted by branch (section 11)</td><td class="num">${C2(secTot)}</td></tr><tr><td>Our share (${share}%)</td><td class="num">${C2(secOur)}</td></tr>
+  <tr class="hl"><td>NPV = value ÷ (1 + ${R.toFixed(2)}%)², discount at 1Y MCLR + 3%</td><td class="num">${C2(npv)}</td></tr></table></div>`;
+ // 19 module
+ const MK={'Easily marketable':2,'Not easily marketable':1,'Difficult to market':0};
+ let wsum=0;const mrows=secs.filter(r=>num(r[5])>0).map(r=>{const pct=secTot?num(r[5])/secTot:0;const pts=MK[r[6]||'Easily marketable'];wsum+=pct*pts;return [r[0],num(r[5]),pct,pts,pct*pts]});
+ const band=(x,p)=>x>1?p[0]:x>.75?p[1]:x>.5?p[2]:x>.25?p[3]:p[4];
+ const p1=CD&&secOur?band(secOur/CD,[5,4,2,1,0]):0;const p2=secOur?Math.round(wsum+1e-9):0;
+ const mshare=SRD.f.means_share===''||SRD.f.means_share==null?100:num(SRD.f.means_share);const meansOur=colSum('means',4)*mshare/100;
+ const p3=CD?band(meansOur/CD,[4,3,2,1,0]):0;const p4=(SRD.f.legal||'').startsWith('Documents are defective')?0:1;
+ const yrs=days/365;const p5=npa?(yrs<=2?3:yrs<4?2:0):0;const tot=p1+p2+p3+p4+p5;
+ const minTxt=tot>=15?['Outstanding in running ledger + simple interest @ 1Y MCLR + 2%',rl+rl*(m+2)/100*days/365]:tot>=12?['Outstanding in running ledger + simple interest @ 1Y MCLR',CD]:tot>=10?['100% of outstanding in running ledger',rl]:tot>=8?['75% of outstanding in running ledger',.75*rl]:tot>=6?['50% of outstanding in running ledger',.5*rl]:tot>=4?['25% of outstanding in running ledger',.25*rl]:['10% of outstanding in running ledger',.1*rl];
+ const pctCD=x=>CD?(x/CD*100).toFixed(2)+'%':'—';
+ const secTxt=p1===5?'Exceeds the crystallised dues':p1===4?'Exceeds 75% and up to 100% of CD':p1===2?'Exceeds 50% and up to 75% of CD':p1===1?'Exceeds 25% and up to 50% of CD':'Up to 25% of CD';
+ $('#sr19').innerHTML=`<div class="tblwrap"><table class="tbl"><tr><th>S.no.</th><th>Parameter</th><th>Particulars</th><th class="num">Points</th></tr>
+ <tr><td>1</td><td>Realisable value of securities</td><td>Security value (our share ${share}%): ₹${C2(secOur)} Cr, ${pctCD(secOur)} of crystallised dues ₹${C2(CD)} Cr. ${secTxt}</td><td class="num">${p1}</td></tr>
+ <tr><td>2</td><td>Marketability of securities</td><td>Weighted average ${wsum.toFixed(2)} (see table below)</td><td class="num">${p2}</td></tr>
+ <tr><td>3</td><td>Aggregate means of borrower & guarantors</td><td>Our share of means: ₹${C2(meansOur)} Cr, ${pctCD(meansOur)} of crystallised dues</td><td class="num">${p3}</td></tr>
+ <tr><td>4</td><td>Legal position of the bank</td><td>${esc(SRD.f.legal||'No defects / deficiencies in documents & mortgage is in order')}</td><td class="num">${p4}</td></tr>
+ <tr><td>5</td><td>Age of NPA</td><td>${npa?yrs.toFixed(2)+' years (to '+fd(asOn)+')':'Enter NPA date in section 3'}</td><td class="num">${p5}</td></tr>
+ <tr class="hl"><td></td><td colspan="2">Total points scored</td><td class="num">${tot}</td></tr>
+ <tr class="hl"><td></td><td colspan="2">Minimum settlement amount: ${minTxt[0]}</td><td class="num">₹${C2(minTxt[1])} Cr</td></tr></table></div>
+ <h4>Calculation of points in marketability of securities</h4>
+ ${mrows.length?`<div class="tblwrap"><table class="tbl"><tr><th>Sl.</th><th>Description</th><th class="num">Value (₹ Cr)</th><th class="num">% in total</th><th class="num">Points</th><th class="num">Av. points</th></tr>${mrows.map((r,i)=>`<tr><td>${i+1}</td><td>${esc(r[0])}</td><td class="num">${C2(r[1])}</td><td class="num">${(r[2]*100).toFixed(2)}%</td><td class="num">${r[3]}</td><td class="num">${r[4].toFixed(2)}</td></tr>`).join('')}<tr class="tot"><td></td><td><b>Total</b></td><td class="num">${C2(secTot)}</td><td class="num">100%</td><td></td><td class="num">${wsum.toFixed(2)} → ${p2}</td></tr></table></div>`:'<p class="note">Nil. Enter securities with value accepted by branch in section 11.</p>'}
+ <p class="note">Minimum settlement is internal and must not be disclosed to the borrower.</p>`;
+ set('#sr_ason_t',fd(asOn).replace(/-/g,'.'));
+}
+function srFill(force){const a=ACC.find(x=>x.account_no===SRK);if(!a)return;const f=SRD.f;const cr=v=>v===''||v==null?'':String(+(num(v)/100).toFixed(4));
+ const put=(k,v)=>{if(v!==''&&v!=null&&(force||!f[k]))f[k]=v};
+ put('name',a.borrower);put('acno',a.account_no);put('br_present',a.branch);put('constitution',a.constitution);put('npa_date',a.npa_date);put('asset_class',a.asset_class);
+ put('arrangement',Y(a.consortium)?'Consortium':'Sole banking');put('our_share',Y(a.consortium)?a.bank_share_pct:'100');put('present_pos',a.unit_status);
+ put('s132',a.notice_13_2_date);put('s134',a.possession_13_4_date);put('s14',a.sec14_filed_date);put('drt_file',a.suit_filed_date);
+ put('nclt',a.nclt_status&&a.nclt_status!=='None'?a.nclt_status+(a.cirp_date?', CIRP from '+fd(pd(a.cirp_date)):''):'');
+ put('staff_acc',Y(a.staff_accountability)?'Examined':'');put('wilful',a.fraud_status==='Wilful'?'Declared wilful defaulter':(Y(a.wd_examined)?'Examined, not declared':''));
+ put('fraud',a.fraud_status==='Fraud'?'Declared fraud':(a.fraud_status==='RFA'?'Red flagged account':''));put('legal',a.legal_position==='Defective'?'Documents are defective & mortgage not enforceable':'');
+ put('gc_scheme',Y(a.cgtmse_cover)?'CGTMSE':'');
+ const ot=(a.proc&&a.proc.follow)?'':'';
+ if(force||!(SRD.t.fac||[]).some(r=>num(r[3]))){SRD.t.fac=[[a.borrower,'Fund based','',cr(a.rl_lakh),cr(num(a.contractual_dues_lakh)>num(a.rl_lakh)?num(a.contractual_dues_lakh)-num(a.rl_lakh):''),'','',num(a.provision_pct)?String(+(num(a.rl_lakh)*num(a.provision_pct)/10000).toFixed(4)):'','']]}
+ if(num(a.security_rv_lakh)&&(force||!(SRD.t.secp||[]).concat(SRD.t.secc||[]).some(r=>num(r[5])))){
+  const mk=a.security_type==='Agri land'||num(a.auctions_failed)>4?'Difficult to market':num(a.auctions_failed)>=1?'Not easily marketable':'Easily marketable';
+  SRD.t.secc=[[a.security_type||'Security','','',a.valuation_date?'Report dated '+fd(pd(a.valuation_date)):'',cr(a.security_fmv_lakh),cr(a.security_rv_lakh),mk]]}
+ if(num(a.means_lakh)&&(force||!(SRD.t.means||[]).some(r=>num(r[4]))))SRD.t.means=[['Borrower',a.borrower,'','',cr(a.means_lakh)]];
+ if(a.log&&a.log.length&&(force||!f.action_plan)){const l=a.log[a.log.length-1];f.action_plan='Last contact '+fd(pd(l.d))+' ('+l.m+(l.p?', '+l.p:'')+'): '+l.o}
+}
+$('#sr_acc').addEventListener('change',e=>{SRK=e.target.value;SRD=SRK?srGet():null;if(SRD&&SRK!=='__blank'){srFill(false);srSave()}renderSR()});
+$('#sr_fill').onclick=()=>{if(SRK==='__blank'){toast('A blank report has no account to fill from');return}if(!confirm('Overwrite report fields with the account details?'))return;srFill(true);srSave();renderSR();toast('Filled from account')};
+$('#sr_print').onclick=()=>{showTab('sr');window.print()};
+$('#sr_clear').onclick=()=>{if(!confirm('Clear this status report?'))return;if(SRK==='__blank'){SRD={f:{},t:{}};try{localStorage.setItem('rd_sr_blank',JSON.stringify(SRD))}catch(e){}}else{const a=ACC.find(x=>x.account_no===SRK);a.sr={f:{},t:{}};save()}renderSR();toast('Report cleared')};
+$('#sr_form').addEventListener('input',e=>{const el=e.target;if(!SRD)return;
+ if(el.dataset.f){SRD.f[el.dataset.f]=el.value;if(el.tagName==='TEXTAREA')srGrow(el)}
+ else if(el.dataset.t){SRD.t[el.dataset.t][+el.dataset.r][+el.dataset.c]=el.value}else return;
+ srCalc();srSave()});
+$('#sr_form').addEventListener('change',e=>{const el=e.target;if(el.tagName==='SELECT'){if(el.dataset.f)SRD.f[el.dataset.f]=el.value;else if(el.dataset.t)SRD.t[el.dataset.t][+el.dataset.r][+el.dataset.c]=el.value;srCalc();srSave()}});
+$('#sr_form').addEventListener('click',e=>{const add=e.target.closest('[data-sradd]'),del=e.target.closest('[data-srdel]');
+ if(add){const k=add.dataset.sradd;srRows(k).push(Array(SRT[k].cols.length).fill(''));srSave();renderSR()}
+ if(del){const k=del.dataset.srdel;SRD.t[k].splice(+del.dataset.r,1);srSave();renderSR()}});
+function toSR(a){SRK=a.account_no;SRD=srGet();srFill(false);srSave();showTab('sr');renderSR();window.scrollTo(0,0)}
+
+/* ---------- tabs ---------- */
+function showTab(k){document.querySelectorAll('nav.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===k));
+ document.querySelectorAll('section.pane').forEach(s=>s.classList.toggle('on',s.id===k))}
+document.querySelectorAll('nav.tabs button').forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
+
+load();render();calcOTS();calcDel();
+</script>
+</body>
+</html>
