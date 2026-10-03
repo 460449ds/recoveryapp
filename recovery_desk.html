@@ -187,7 +187,7 @@ textarea.csv{width:100%;min-height:220px;font-size:12px;border:1px solid var(--l
   <p class="lead">Load your NPA list or add accounts one by one. Each account is checked against the policy timelines and you get the pending steps, their due dates and where each step has to be done. Everything stays in this browser.</p>
   <div class="bar">
     <button type="button" class="btn primary" id="csvBtn">Load CSV file</button><input type="file" id="csvIn" accept=".csv,.txt,text/csv,text/plain,application/vnd.ms-excel,*/*" hidden>
-    <button class="btn" id="addBtn">Add account</button>
+    <button type="button" class="btn" id="pasteBtn">Paste CSV</button><button class="btn" id="addBtn">Add account</button>
     <button class="btn" id="sampleBtn">Load sample accounts</button>
     <button class="btn" id="exportBtn">Copy as CSV</button>
     <button class="btn danger" id="clearBtn">Clear all</button>
@@ -326,6 +326,10 @@ textarea.csv{width:100%;min-height:220px;font-size:12px;border:1px solid var(--l
 <dialog id="csvDlg">
   <div class="dh"><b>Accounts as CSV</b><button class="btn small" id="csvClose">Close</button></div>
   <div class="db"><p class="note">Select all and copy, then paste into Excel or a .csv file.</p><textarea class="csv" id="csvText" readonly></textarea></div>
+</dialog>
+<dialog id="pasteDlg">
+  <div class="dh"><b>Paste CSV</b><button class="btn small" id="pasteClose">Close</button></div>
+  <div class="db"><p class="note">Open your file in Excel or Notepad, copy all rows including the header row, and paste here.</p><textarea class="csv" id="pasteText"></textarea><div class="bar"><button class="btn primary" id="pasteGo">Import</button></div></div>
 </dialog>
 <div class="toast" id="toast"></div>
 
@@ -659,16 +663,20 @@ function parseCSV(t){const rows=[];let r=[],c='',q=false;
   else if(ch==='"')q=true; else if(ch===','){r.push(c);c=''} else if(ch==='\n'){r.push(c);rows.push(r);r=[];c=''} else if(ch!=='\r')c+=ch}
  if(c!==''||r.length){r.push(c);rows.push(r)}return rows.filter(x=>x.some(v=>v.trim()!==''))}
 $('#csvBtn').addEventListener('click',()=>{const i=$('#csvIn');i.value='';i.click()});
-$('#csvIn').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onerror=()=>toast('Could not read the file');
- rd.onload=()=>{const rows=parseCSV(rd.result);if(rows.length<2){toast('The file has no data rows');return}
+function importCSV(text){const rows=parseCSV(text);if(rows.length<2){toast('The file has no data rows');return false}
   const h=rows[0].map(x=>x.trim().toLowerCase().replace(/\s+/g,'_'));
   const miss=['account_no','borrower','rl_lakh','npa_date'].filter(k=>!h.includes(k));
-  if(miss.length){toast('Missing columns: '+miss.join(', '));return}
+  if(miss.length){toast('Missing columns: '+miss.join(', '));return false}
   let n=0,u=0;rows.slice(1).forEach(r=>{const o={};KEYS.forEach(k=>{const j=h.indexOf(k);o[k]=j>=0?(r[j]||'').trim():''});
    FIELDS.filter(f=>f[2]==='date').forEach(f=>{const d=pd(o[f[0]]);o[f[0]]=d?iso(d):''});
    if(!o.account_no)return;const i=ACC.findIndex(x=>x.account_no===o.account_no);if(i>=0){ACC[i]={...ACC[i],...o};u++}else{ACC.push(o);n++}});
-  save();render();toast(`${n} added, ${u} updated`);e.target.value=''};
- rd.readAsText(f)});
+  save();render();toast(`${n} added, ${u} updated`);return true}
+function readCSVFile(f){if(!f)return;const rd=new FileReader();rd.onerror=()=>toast('Could not read the file');rd.onload=()=>importCSV(rd.result);rd.readAsText(f)}
+$('#csvIn').addEventListener('change',e=>{readCSVFile(e.target.files[0]);e.target.value=''});
+$('#pasteBtn').onclick=()=>{$('#pasteText').value='';$('#pasteDlg').showModal()};
+$('#pasteClose').onclick=()=>$('#pasteDlg').close();
+$('#pasteGo').onclick=()=>{if(importCSV($('#pasteText').value))$('#pasteDlg').close()};
+['dragover','drop'].forEach(ev=>document.addEventListener(ev,e=>{if(!e.dataTransfer||![...e.dataTransfer.types].includes('Files'))return;e.preventDefault();if(ev==='drop')readCSVFile(e.dataTransfer.files[0])}));
 function toCSV(list){const q=v=>{v=String(v??'');return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
  return [KEYS.join(','),...list.map(a=>KEYS.map(k=>q(k.endsWith('_date')?(a[k]?fd(pd(a[k])):''):a[k])).join(','))].join('\n')}
 $('#exportBtn').onclick=()=>{if(!ACC.length){toast('No accounts to copy');return}$('#csvText').value=toCSV(ACC);$('#csvDlg').showModal();$('#csvText').select()};
