@@ -1,12 +1,16 @@
 [project]
-name = "blank-app-template"
+name = "recovery-tracker"
 version = "0.1.0"
-description = "A simple Streamlit app template."
+description = "NPA recovery tracker: SARFAESI workflow, notice formats and BC/DRA agent tracking."
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
     "streamlit>=1.59.2",
+    "python-docx>=1.1",
 ]
 
 [tool.uv]
 package = false
+
+[dependency-groups]
+dev = ["pytest", "reportlab"]
